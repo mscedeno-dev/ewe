@@ -1,114 +1,162 @@
-<ion-header translucent="true">
-  <ion-toolbar>
-    <ion-title>Academia de Lengua</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="home-bg">
+    <div class="container">
 
-<ion-content [fullscreen]="true" class="page">
-  <div class="container">
-
-    <!-- METRICS TOP -->
-    <div class="metrics">
-      <ion-card class="metric">
-        <ion-card-content>
-          <div class="metric-title">Progreso general</div>
-          <div class="metric-value">{{ overallPercent }}%</div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="metric">
-        <ion-card-content>
-          <div class="metric-title">Módulos completados</div>
-          <div class="metric-value">{{ completedModules }} / {{ totalModules }}</div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="metric">
-        <ion-card-content>
-          <div class="metric-title">Estado</div>
-          <div class="metric-value">{{ statusText }}</div>
-        </ion-card-content>
-      </ion-card>
-    </div>
-
-    <!-- MAIN DASHBOARD GRID -->
-    <div class="dash-grid">
-
-      <!-- LEFT: Progress + modules -->
-      <ion-card class="big-card">
-        <ion-card-content>
-          <div class="big-title">
-            <span class="icon">📊</span>
-            <span>Tu progreso</span>
+      <!-- Header -->
+      <header class="top-header">
+        <div class="title-wrap">
+          <div class="app-mark">
+            <ion-icon name="school"></ion-icon>
           </div>
+          <div>
+            <h1>Academia de Lengua</h1>
+            <p>Panel general de progreso y acceso rápido</p>
+          </div>
+        </div>
 
-          <!-- donut -->
-          <div class="donut-wrap">
-            <div
-              class="donut"
-              [ngStyle]="{ 'background': 'conic-gradient(#4f46e5 ' + donutDeg + 'deg, #e5e7eb 0deg)' }"
-            >
-              <div class="donut-center">
-                <div class="donut-text">{{ overallPercent }}%</div>
+        <ion-button fill="clear" class="icon-btn" (click)="resetearProgreso()">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </header>
+
+      <!-- Top Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon soft-indigo">
+              <ion-icon name="stats-chart-outline"></ion-icon>
+            </div>
+            <span class="stat-label">Progreso general</span>
+          </div>
+          <div class="stat-value">{{ progresoGeneral }}%</div>
+          <div class="stat-sub">Promedio de todos los módulos</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon soft-emerald">
+              <ion-icon name="checkmark-done-outline"></ion-icon>
+            </div>
+            <span class="stat-label">Módulos completados</span>
+          </div>
+          <div class="stat-value">{{ modulosCompletados }} / 6</div>
+          <div class="stat-sub">Incluye Lecciones</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon soft-amber">
+              <ion-icon name="flash-outline"></ion-icon>
+            </div>
+            <span class="stat-label">Estado</span>
+          </div>
+          <div class="stat-value">Activo</div>
+          <div class="stat-sub">Listo para estudiar</div>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="main-grid">
+
+        <!-- PROGRESO -->
+        <section class="glass-card">
+          <div class="progress-header">
+            <div class="head-left">
+              <div class="head-icon soft-slate">
+                <ion-icon name="analytics-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Tu progreso</h2>
+                <p>Busca un módulo o entra directo</p>
+              </div>
+            </div>
+
+            <!-- ✅ CÍRCULO GRANDE COMO ANTES -->
+            <div class="big-ring">
+              <div class="big-ring-bg" [style.background]="ringBackground"></div>
+              <div class="big-ring-center">
+                <div class="big-ring-value">{{ progresoGeneral }}%</div>
+                <div class="big-ring-sub">Total</div>
               </div>
             </div>
           </div>
 
-          <!-- search -->
-          <ion-searchbar
-            class="search"
-            placeholder="Buscar módulo..."
-            (ionInput)="onSearch($event)"
-          ></ion-searchbar>
+          <div class="search-row">
+            <ion-icon name="search-outline"></ion-icon>
+            <input
+              type="text"
+              placeholder="Buscar módulo..."
+              [(ngModel)]="busqueda"
+              (input)="filtrar()"
+            />
+          </div>
 
-          <!-- module cards -->
           <div class="modules-grid">
-            <button
-              *ngFor="let m of filteredModules"
-              class="module-btn"
-              [ngClass]="m.colorClass"
-              (click)="go(m.route)"
-            >
-              <div class="module-top">
-                <div class="module-title">{{ m.title }}</div>
-                <div class="module-emoji">{{ m.emoji }}</div>
-              </div>
-              <div class="module-sub">{{ m.subtitle }}</div>
-
-              <div class="module-foot">
-                <div class="mini-progress">
-                  <div class="mini-bar" [style.width.%]="getModulePercent(m.key)"></div>
+            @for (m of modulosFiltrados; track m.id) {
+              <div class="module-tile" [class]="m.theme" (click)="ir(m.route)">
+                <div class="tile-top">
+                  <div class="tile-left">
+                    <div class="tile-icon">
+                      <ion-icon [name]="m.icon"></ion-icon>
+                    </div>
+                    <div class="tile-info">
+                      <div class="tile-title">{{ m.titulo }}</div>
+                      <div class="tile-sub">{{ m.nivel }} · {{ m.subs }} submódulos</div>
+                    </div>
+                  </div>
+                  <div class="tile-pct">{{ m.porcentaje }}%</div>
                 </div>
-                <div class="mini-text">{{ getModulePercent(m.key) }}%</div>
+
+                <div class="tile-bar">
+                  <div class="tile-bar-fill" [style.width.%]="m.porcentaje"></div>
+                </div>
               </div>
-            </button>
+            }
+          </div>
+        </section>
+
+        <!-- ACCESO RÁPIDO (sin huecos) -->
+        <aside class="glass-card side-card">
+          <div class="side-head">
+            <div class="head-left">
+              <div class="head-icon soft-indigo">
+                <ion-icon name="rocket-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Acceso rápido</h2>
+                <p>Practica cuando quieras</p>
+              </div>
+            </div>
           </div>
 
-          <!-- optional -->
-          <!-- <ion-button fill="clear" size="small" (click)="resetProgress()">Reiniciar progreso</ion-button> -->
-        </ion-card-content>
-      </ion-card>
+          <div class="side-body">
+            <ion-button expand="block" class="primary-btn" (click)="ir('/lecciones')">
+              <ion-icon name="school" slot="start"></ion-icon>
+              Lecciones y Examen Final
+            </ion-button>
 
-      <!-- RIGHT: Quick access -->
-      <ion-card class="side-card">
-        <ion-card-content>
-          <div class="side-title">
-            <span class="icon">🚀</span>
-            <span>Acceso rápido</span>
+            <div class="tip">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>Consejo: realiza el examen final varias veces para mejorar tu resultado.</span>
+            </div>
+
+            <div class="quick-links">
+              <button class="quick-btn" (click)="ir('/dashboard')">
+                <ion-icon name="grid-outline"></ion-icon>
+                <span>Dashboard</span>
+              </button>
+
+              <button class="quick-btn" (click)="ir('/gramatica')">
+                <ion-icon name="book-outline"></ion-icon>
+                <span>Ir a Gramática</span>
+              </button>
+            </div>
           </div>
+        </aside>
 
-          <p class="side-text">Practica y evalúate cuando quieras.</p>
-
-          <ion-button expand="block" class="cta" (click)="go('/lecciones')">
-            🧠 Lecciones y Examen Final
-          </ion-button>
-
-          <div class="hint">
-            Consejo: Si apruebas el examen final, tu progreso de “Lecciones” se marca.
-          </div>
-        </ion-card-content>
-      </ion-card>
+      </div>
 
     </div>
   </div>
 </ion-content>
+

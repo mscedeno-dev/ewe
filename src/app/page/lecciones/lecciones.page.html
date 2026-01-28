@@ -1,0 +1,124 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content class="sidebar-content">
+      <div class="sidebar-brand">
+        <div class="logo-box">
+          <ion-icon name="school"></ion-icon>
+        </div>
+        <span>Academia <b></b></span>
+      </div>
+
+      <div class="search-box">
+        <ion-icon name="search-outline"></ion-icon>
+        <input type="text" placeholder="Buscar concepto...">
+      </div>
+
+      <ion-list lines="none" class="menu-list">
+        @for (cat of categorias; track cat.title) {
+          <ion-item
+            (click)="seleccionarCategoria(cat)"
+            [class.is-active]="cat.active"
+            button="true"
+            detail="false">
+            <div class="indicator" [style.background]="cat.color"></div>
+            <ion-icon [name]="cat.icon" slot="start"></ion-icon>
+            <ion-label>{{ cat.title }}</ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-content [fullscreen]="true">
+      <div class="main-wrapper">
+
+        <header class="content-header final-header">
+          <div class="status-badge final-badge">
+            <span class="pulse-dot"></span>
+            Módulo Final
+          </div>
+
+          <h1>Lecciones</h1>
+          <p>Practica de forma ilimitada y prepárate para el examen final</p>
+
+          <!-- Detalle que lo destaca -->
+          <div class="final-banner">
+            <div class="banner-left">
+              <div class="banner-icon">
+                <ion-icon name="ribbon-outline"></ion-icon>
+              </div>
+              <div class="banner-text">
+                <div class="banner-title">Ruta de cierre</div>
+                <div class="banner-subtitle">
+                  Lecciones aleatorias + examen final + resultados
+                </div>
+              </div>
+            </div>
+
+            <div class="banner-right">
+              <ion-chip class="chip-soft">
+                <ion-icon name="shuffle-outline"></ion-icon>
+                <ion-label>Orden aleatorio</ion-label>
+              </ion-chip>
+
+              <ion-chip class="chip-soft">
+                <ion-icon name="infinite-outline"></ion-icon>
+                <ion-label>Intentos ilimitados</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+        </header>
+
+        <div class="glass-card">
+          <h2 class="section-title">Elige una lección para practicar:</h2>
+
+          <ion-grid>
+            <ion-row>
+              @for (item of lecciones; track item.id) {
+                <ion-col size="12" size-sm="6" size-lg="4">
+                  <div class="sub-card ion-activatable ripple-parent"
+                       (click)="abrirLeccion(item.id)">
+                    <div class="icon-circle" [style.background-color]="item.color + '20'">
+                      <ion-icon [name]="item.icono" [style.color]="item.color"></ion-icon>
+                    </div>
+
+                    <h3>{{ item.nombre }}</h3>
+                    <p>Generar práctica</p>
+
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                </ion-col>
+              }
+            </ion-row>
+          </ion-grid>
+
+          <!-- Card destacada para el Examen Final -->
+          <div class="final-exam-card ion-activatable ripple-parent" (click)="abrirExamenFinal()">
+            <div class="final-exam-left">
+              <div class="final-exam-icon">
+                <ion-icon name="trophy-outline"></ion-icon>
+              </div>
+
+              <div class="final-exam-text">
+                <div class="final-exam-title">Examen Final</div>
+                <div class="final-exam-subtitle">
+                  Mezcla preguntas de todos los módulos (orden aleatorio)
+                </div>
+              </div>
+            </div>
+
+            <div class="final-exam-action">
+              <ion-button fill="solid" size="small">
+                Iniciar
+              </ion-button>
+            </div>
+
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </div>
+
+      </div>
+    </ion-content>
+  </div>
+</ion-split-pane>

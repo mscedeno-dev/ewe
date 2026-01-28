@@ -152,18 +152,18 @@ ion-content {
   }
 }
 
-/* ===================== SUB CARDS ===================== */
+/* ===================== SUBMÓDULOS ===================== */
 .sub-card {
   background: white;
   border-radius: 20px;
   padding: 30px 20px;
   text-align: center;
-  transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   border: 1px solid #f1f5f9;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 
   .icon-circle {
     width: 60px;
@@ -205,7 +205,6 @@ ion-content {
   overflow: hidden;
 }
 
-/* Pulse */
 @keyframes pulse {
   0% {
     transform: scale(0.95);

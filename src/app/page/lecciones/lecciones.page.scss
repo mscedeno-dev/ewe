@@ -1,0 +1,304 @@
+:host {
+  --side-nav-width: 280px;
+  --primary-font: 'Inter', sans-serif;
+}
+
+ion-content {
+  --background: #f0f4f8 url('https://www.transparenttextures.com/patterns/cubes.png');
+}
+
+/* SIDEBAR (mismo estilo) */
+.sidebar-content {
+  --background: #111827;
+
+  .sidebar-brand {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    font-size: 1.3rem;
+
+    .logo-box {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      padding: 8px;
+      border-radius: 10px;
+      display: flex;
+
+      ion-icon { font-size: 24px; color: white; }
+    }
+  }
+
+  .search-box {
+    margin: 0 20px 20px;
+    background: #1f2937;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+
+    ion-icon { color: #9ca3af; font-size: 18px; }
+
+    input {
+      background: transparent;
+      border: none;
+      color: white;
+      margin-left: 10px;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+  .menu-list {
+    background: transparent;
+
+    ion-item {
+      --background: transparent;
+      --color: #9ca3af;
+      --padding-start: 20px;
+      margin: 4px 15px;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      .indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
+      &.is-active {
+        --background: #1f2937;
+        --color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      }
+
+      &:hover { --color: white; }
+    }
+  }
+}
+
+/* MAIN */
+.main-wrapper {
+  padding: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  .content-header {
+    margin-bottom: 30px;
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      background: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 14px;
+
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        margin-right: 8px;
+        animation: pulse 2s infinite;
+      }
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0; }
+    p { color: #6b7280; font-size: 1.1rem; margin-top: 6px; }
+  }
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+
+  .section-title {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+}
+
+/* Sub Cards */
+.sub-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+
+    ion-icon { font-size: 30px; }
+  }
+
+  h3 { margin: 0; font-size: 1.2rem; font-weight: 800; color: #1e293b; }
+  p { margin: 5px 0 0; color: #94a3b8; font-size: 0.85rem; }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.10);
+    border-color: #e2e8f0;
+  }
+}
+
+.ripple-parent { position: relative; overflow: hidden; }
+
+/* ================== DETALLE FINAL (BANNER) ================== */
+.final-header {
+  .final-banner {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(168,85,247,.12));
+    border: 1px solid rgba(99,102,241,.18);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-shadow: 0 10px 22px rgba(2,6,23,.06);
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .banner-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(99,102,241,.18);
+        border: 1px solid rgba(99,102,241,.22);
+
+        ion-icon {
+          font-size: 22px;
+          color: #4f46e5;
+        }
+      }
+
+      .banner-title {
+        font-weight: 900;
+        color: #111827;
+      }
+      .banner-subtitle {
+        font-weight: 700;
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-top: 2px;
+      }
+    }
+
+    .banner-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-soft {
+      --background: rgba(255,255,255,.75);
+      --color: #111827;
+      border: 1px solid rgba(148,163,184,.35);
+      font-weight: 800;
+
+      ion-icon { margin-right: 6px; }
+    }
+  }
+}
+
+/* ================== EXAMEN FINAL DESTACADO ================== */
+.final-exam-card {
+  margin-top: 18px;
+  border-radius: 22px;
+  padding: 18px 18px;
+  background: linear-gradient(135deg, rgba(16,185,129,.10), rgba(59,130,246,.10));
+  border: 1px solid rgba(16,185,129,.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 18px 30px rgba(2,6,23,.06);
+
+  .final-exam-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .final-exam-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16,185,129,.16);
+      border: 1px solid rgba(16,185,129,.18);
+
+      ion-icon {
+        font-size: 26px;
+        color: #059669;
+      }
+    }
+
+    .final-exam-title {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+    .final-exam-subtitle {
+      margin-top: 2px;
+      font-weight: 700;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+  }
+
+  ion-button {
+    --border-radius: 14px;
+    font-weight: 800;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    transition: .2s;
+  }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}

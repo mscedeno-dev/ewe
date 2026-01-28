@@ -1,166 +1,126 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
 
-type ModuleKey =
-  | 'gramatica'
-  | 'ortografia'
-  | 'puntuacion'
-  | 'redaccion'
-  | 'compresion'
-  | 'lecciones';
+import {
+  school,
+  refreshOutline,
+  statsChartOutline,
+  checkmarkDoneOutline,
+  flashOutline,
+  analyticsOutline,
+  searchOutline,
+  rocketOutline,
+  informationCircleOutline,
+  gridOutline,
+  bookOutline,
+  pencilOutline,
+  shapesOutline,
+  documentTextOutline,
+  libraryOutline,
+} from 'ionicons/icons';
 
-interface ModuleItem {
-  key: ModuleKey;
-  title: string;
-  subtitle: string;
-  colorClass: string; // para estilos (green/yellow/red/purple)
-  route: string;      // ruta en Ionic (ajústala a tus rutas reales)
-  emoji: string;
+type ModuloId = 'gramatica' | 'ortografia' | 'puntuacion' | 'redaccion' | 'comprension' | 'lecciones';
+
+interface ModuloCard {
+  id: ModuloId;
+  titulo: string;
+  nivel: string;
+  subs: number;
+  route: string;
+  theme: string;
+  icon: string;
+  porcentaje: number;
 }
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterModule],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  imports: [CommonModule, FormsModule, IonContent, IonButton, IonIcon],
 })
 export class HomePage implements OnInit {
-  // ✅ Define aquí tus submódulos (5 por cada módulo, + examen final como lecciones)
-  private readonly MODULES_MAP: Record<ModuleKey, string[]> = {
-    gramatica: ['sustantivos', 'verbos', 'adjetivos', 'articulos', 'pronombres'],
-    ortografia: ['acentuacion', 'b-v', 'c-s-z', 'g-j', 'mayusculas'],
-    puntuacion: ['punto', 'coma', 'punto-y-coma', 'dos-puntos', 'signos'],
-    redaccion: ['oracion-simple', 'oracion-compuesta', 'parrafo', 'coherencia', 'cohesion'],
-    compresion: ['idea-principal', 'ideas-secundarias', 'inferencias', 'tipo-texto', 'resumen'],
-    lecciones: ['examen-final'],
-  };
+  busqueda = '';
 
-  modules: ModuleItem[] = [
-    {
-      key: 'gramatica',
-      title: 'Gramática',
-      subtitle: 'Nivel fácil • 5 submódulos',
-      colorClass: 'green',
-      route: '/gramatica', // ajusta si tu ruta es otra
-      emoji: '🟢',
-    },
-    {
-      key: 'ortografia',
-      title: 'Ortografía',
-      subtitle: 'Nivel fácil • 5 submódulos',
-      colorClass: 'green',
-      route: '/ortografia',
-      emoji: '🟢',
-    },
-    {
-      key: 'puntuacion',
-      title: 'Puntuación',
-      subtitle: 'Nivel medio • 5 submódulos',
-      colorClass: 'yellow',
-      route: '/puntuacion',
-      emoji: '🟡',
-    },
-    {
-      key: 'redaccion',
-      title: 'Redacción',
-      subtitle: 'Nivel medio • 5 submódulos',
-      colorClass: 'yellow',
-      route: '/redaccion',
-      emoji: '🟡',
-    },
-    {
-      key: 'compresion',
-      title: 'Comprensión',
-      subtitle: 'Nivel difícil • 5 submódulos',
-      colorClass: 'red',
-      route: '/compresion',
-      emoji: '🔴',
-    },
-    {
-      key: 'lecciones',
-      title: 'Lecciones y Examen Final',
-      subtitle: 'Práctica ilimitada • examen aleatorio',
-      colorClass: 'purple',
-      route: '/lecciones',
-      emoji: '🧠',
-    },
+  modulos: ModuloCard[] = [
+    { id: 'gramatica',   titulo: 'Gramática',   nivel: 'Nivel fácil',   subs: 5, route: '/gramatica',   theme: 'theme-green',  icon: 'book-outline',          porcentaje: 0 },
+    { id: 'ortografia',  titulo: 'Ortografía',  nivel: 'Nivel fácil',   subs: 5, route: '/ortografia',  theme: 'theme-green',  icon: 'pencil-outline',        porcentaje: 0 },
+    { id: 'puntuacion',  titulo: 'Puntuación',  nivel: 'Nivel medio',   subs: 5, route: '/puntuacion',  theme: 'theme-amber',  icon: 'shapes-outline',        porcentaje: 0 },
+    { id: 'redaccion',   titulo: 'Redacción',   nivel: 'Nivel medio',   subs: 5, route: '/redaccion',   theme: 'theme-amber',  icon: 'document-text-outline', porcentaje: 0 },
+    { id: 'comprension', titulo: 'Comprensión', nivel: 'Nivel difícil', subs: 5, route: '/comprension', theme: 'theme-red',    icon: 'library-outline',       porcentaje: 0 },
+    { id: 'lecciones',   titulo: 'Lecciones',   nivel: 'Módulo final',  subs: 0, route: '/lecciones',   theme: 'theme-indigo', icon: 'school',                porcentaje: 0 },
   ];
 
-  filteredModules: ModuleItem[] = [...this.modules];
+  modulosFiltrados: ModuloCard[] = [];
 
-  // Dashboard metrics
-  overallPercent = 0;        // 0..100
-  completedModules = 0;      // módulos completos (de 6)
-  totalModules = 6;
-  statusText = 'Activo';
+  progresoGeneral = 0;
+  modulosCompletados = 0;
 
-  // Donut
-  donutDeg = 0; // overallPercent * 3.6
+  ringBackground = 'conic-gradient(#e2e8f0 0deg, #e2e8f0 360deg)';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    // ✅ REGISTRO COMPLETO DE ICONOS (esto arregla que no se vean)
+    addIcons({
+      school,
+      refreshOutline,
+      statsChartOutline,
+      checkmarkDoneOutline,
+      flashOutline,
+      analyticsOutline,
+      searchOutline,
+      rocketOutline,
+      informationCircleOutline,
+      gridOutline,
+      bookOutline,
+      pencilOutline,
+      shapesOutline,
+      documentTextOutline,
+      libraryOutline,
+    });
+  }
 
   ngOnInit() {
-    this.refreshProgress();
+    this.recalcular();
+    this.modulosFiltrados = [...this.modulos];
   }
 
-  ionViewWillEnter() {
-    // Se refresca cuando vuelves a Home (Ionic)
-    this.refreshProgress();
-  }
-
-  refreshProgress() {
-    // Calcula progreso por módulo
-    const modulePercents = this.modules.map(m => this.getModulePercent(m.key));
-
-    // Módulo completado si está al 100%
-    this.completedModules = modulePercents.filter(p => p === 100).length;
-
-    // Progreso general = promedio simple (puedes cambiar a ponderado)
-    const avg = modulePercents.reduce((a, b) => a + b, 0) / modulePercents.length;
-    this.overallPercent = Math.round(avg);
-
-    this.donutDeg = Math.round(this.overallPercent * 3.6);
-
-    // Estado (simple)
-    this.statusText = this.overallPercent > 0 ? 'Activo' : 'Activo';
-  }
-
-  getModulePercent(key: ModuleKey): number {
-    const subs = this.MODULES_MAP[key] ?? [];
-    if (subs.length === 0) return 0;
-
-    const done = subs.filter(sub => {
-      const k = `sub:${key}:${sub}`;
-      return localStorage.getItem(k) === '1' || localStorage.getItem(k) === 'true';
-    }).length;
-
-    return Math.round((done / subs.length) * 100);
-  }
-
-  onSearch(ev: CustomEvent) {
-    const value = (ev.detail?.value ?? '').toString().trim().toLowerCase();
-    if (!value) {
-      this.filteredModules = [...this.modules];
-      return;
-    }
-
-    this.filteredModules = this.modules.filter(m =>
-      (m.title + ' ' + m.subtitle).toLowerCase().includes(value)
+  filtrar() {
+    const q = this.busqueda.trim().toLowerCase();
+    this.modulosFiltrados = this.modulos.filter(
+      (m) => m.titulo.toLowerCase().includes(q) || m.nivel.toLowerCase().includes(q)
     );
   }
 
-  go(route: string) {
+  ir(route: string) {
     this.router.navigateByUrl(route);
   }
 
-  // ✅ OPCIONAL: botón para limpiar progreso (solo si lo necesitas)
-  resetProgress() {
-    Object.keys(localStorage)
-      .filter(k => k.startsWith('sub:') || k === 'lecciones:aprobado')
-      .forEach(k => localStorage.removeItem(k));
-    this.refreshProgress();
+  resetearProgreso() {
+    localStorage.clear();
+    this.recalcular();
+    this.filtrar();
+  }
+
+  private recalcular() {
+    // ✅ Lee el progreso por módulo desde localStorage
+    // Usa: progress_gramatica, progress_ortografia, etc. (0..100)
+    this.modulos = this.modulos.map((m) => {
+      const val = Number(localStorage.getItem(`progress_${m.id}`) ?? '0');
+      return { ...m, porcentaje: isNaN(val) ? 0 : Math.max(0, Math.min(100, val)) };
+    });
+
+    const total = this.modulos.reduce((acc, m) => acc + m.porcentaje, 0);
+    this.progresoGeneral = Math.round(total / this.modulos.length);
+
+    this.modulosCompletados = this.modulos.filter((m) => m.porcentaje >= 100).length;
+
+    const deg = Math.round((this.progresoGeneral / 100) * 360);
+    this.ringBackground = `conic-gradient(#4f46e5 0deg, #4f46e5 ${deg}deg, #e2e8f0 ${deg}deg, #e2e8f0 360deg)`;
+
+    this.modulosFiltrados = [...this.modulos];
   }
 }

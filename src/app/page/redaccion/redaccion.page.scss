@@ -3,12 +3,11 @@
   --primary-font: 'Inter', sans-serif;
 }
 
-/* Fondo general */
 ion-content {
   --background: #f0f4f8 url('https://www.transparenttextures.com/patterns/cubes.png');
 }
 
-/* ===================== SIDEBAR ===================== */
+/* SIDEBAR */
 .sidebar-content {
   --background: #111827;
 
@@ -25,11 +24,7 @@ ion-content {
       padding: 8px;
       border-radius: 10px;
       display: flex;
-
-      ion-icon {
-        font-size: 24px;
-        color: white;
-      }
+      ion-icon { font-size: 24px; }
     }
   }
 
@@ -40,12 +35,7 @@ ion-content {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-
-    ion-icon {
-      color: #9ca3af;
-      font-size: 18px;
-    }
-
+    ion-icon { color: #9ca3af; }
     input {
       background: transparent;
       border: none;
@@ -53,13 +43,11 @@ ion-content {
       margin-left: 10px;
       outline: none;
       width: 100%;
-      font-size: 14px;
     }
   }
 
   .menu-list {
     background: transparent;
-
     ion-item {
       --background: transparent;
       --color: #9ca3af;
@@ -67,7 +55,7 @@ ion-content {
       margin: 4px 15px;
       border-radius: 10px;
       font-weight: 500;
-      transition: all 0.3s ease;
+      transition: 0.3s;
 
       .indicator {
         width: 8px;
@@ -79,17 +67,15 @@ ion-content {
       &.is-active {
         --background: #1f2937;
         --color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       }
 
-      &:hover {
-        --color: white;
-      }
+      &:hover { --color: white; }
     }
   }
 }
 
-/* ===================== CONTENIDO PRINCIPAL ===================== */
+/* MAIN CONTENT */
 .main-wrapper {
   padding: 40px;
   max-width: 1100px;
@@ -107,12 +93,11 @@ ion-content {
       font-size: 0.8rem;
       font-weight: 600;
       color: #374151;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       margin-bottom: 15px;
 
       .pulse-dot {
-        width: 8px;
-        height: 8px;
+        width: 8px; height: 8px;
         background: #10b981;
         border-radius: 50%;
         margin-right: 8px;
@@ -120,29 +105,18 @@ ion-content {
       }
     }
 
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #111827;
-      margin: 0;
-    }
-
-    p {
-      color: #6b7280;
-      font-size: 1.1rem;
-      margin-top: 6px;
-    }
+    h1 { font-size: 2.5rem; font-weight: 800; color: #111827; margin: 0; }
+    p { color: #6b7280; font-size: 1.1rem; }
   }
 }
 
-/* ===================== TARJETA GLASS ===================== */
 .glass-card {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 24px;
   padding: 35px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
 
   .section-title {
     font-size: 1.1rem;
@@ -152,13 +126,12 @@ ion-content {
   }
 }
 
-/* ===================== SUB CARDS ===================== */
 .sub-card {
   background: white;
   border-radius: 20px;
   padding: 30px 20px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -173,24 +146,11 @@ ion-content {
     align-items: center;
     justify-content: center;
     margin: 0 auto 15px;
-
-    ion-icon {
-      font-size: 30px;
-    }
+    ion-icon { font-size: 30px; }
   }
 
-  h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1e293b;
-  }
-
-  p {
-    margin: 5px 0 0;
-    color: #94a3b8;
-    font-size: 0.85rem;
-  }
+  h3 { margin: 0; font-size: 1.2rem; font-weight: 700; color: #1e293b; }
+  p { margin: 5px 0 0; color: #94a3b8; font-size: 0.85rem; }
 
   &:hover {
     transform: translateY(-8px);
@@ -199,24 +159,10 @@ ion-content {
   }
 }
 
-/* ===================== EFECTOS ===================== */
-.ripple-parent {
-  position: relative;
-  overflow: hidden;
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-/* Pulse */
-@keyframes pulse {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
+.ripple-parent { position: relative; overflow: hidden; }

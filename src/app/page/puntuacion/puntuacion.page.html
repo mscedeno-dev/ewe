@@ -1,41 +1,36 @@
 <ion-split-pane contentId="main-content">
-  <!-- SIDEBAR -->
   <ion-menu contentId="main-content" type="overlay">
     <ion-content class="sidebar-content">
-
       <div class="sidebar-brand">
         <div class="logo-box">
           <ion-icon name="school"></ion-icon>
         </div>
-        <span>Academia</span>
+        <span>Academia <b></b></span>
       </div>
 
       <div class="search-box">
         <ion-icon name="search-outline"></ion-icon>
-        <input type="text" placeholder="Buscar concepto..." />
+        <input type="text" placeholder="Buscar concepto...">
       </div>
 
       <ion-list lines="none" class="menu-list">
         @for (cat of categorias; track cat.title) {
           <ion-item
-            button
-            detail="false"
-            (click)="irModulo(cat.ruta)"
-            [class.is-active]="cat.active">
-
+            (click)="seleccionarCategoria(cat)"
+            [class.is-active]="cat.active"
+            button="true"
+            detail="false">
             <div class="indicator" [style.background]="cat.color"></div>
             <ion-icon [name]="cat.icon" slot="start"></ion-icon>
             <ion-label>{{ cat.title }}</ion-label>
           </ion-item>
         }
       </ion-list>
-
     </ion-content>
   </ion-menu>
 
-  <!-- CONTENIDO -->
   <div class="ion-page" id="main-content">
-    <ion-content fullscreen>
+    <ion-content [fullscreen]="true">
       <div class="main-wrapper">
 
         <header class="content-header">
@@ -43,8 +38,8 @@
             <span class="pulse-dot"></span>
             Módulo Activo
           </div>
-          <h1>Gramática Básica</h1>
-          <p>Domina las reglas fundamentales del español</p>
+          <h1>Puntuación</h1>
+          <p>Aprende a usar signos para escribir con claridad</p>
         </header>
 
         <div class="glass-card">
@@ -53,12 +48,11 @@
           <ion-grid>
             <ion-row>
               @for (sub of submodulos; track sub.id) {
-                <ion-col size="12" size-md="6" size-lg="4">
+                <ion-col size="12" size-sm="6" size-lg="4">
                   <div class="sub-card ion-activatable ripple-parent"
-                       (click)="navegarSubmodulo(sub.id)">
-
-                    <div class="icon-circle" [style.background]="sub.color + '20'">
-                      <ion-icon [name]="sub.icon" [style.color]="sub.color"></ion-icon>
+                       (click)="navegarASubmodulo(sub.id)">
+                    <div class="icon-circle" [style.background-color]="sub.color + '20'">
+                      <ion-icon [name]="sub.icono" [style.color]="sub.color"></ion-icon>
                     </div>
 
                     <h3>{{ sub.nombre }}</h3>
@@ -70,7 +64,6 @@
               }
             </ion-row>
           </ion-grid>
-
         </div>
 
       </div>
