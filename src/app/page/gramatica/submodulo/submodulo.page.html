@@ -1,0 +1,193 @@
+<ion-header class="topbar" translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/gramatica"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ data?.titulo }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="irHome()">
+        <ion-icon name="home-outline" slot="start"></ion-icon>
+        Inicio
+      </ion-button>
+
+      <ion-button fill="clear" (click)="marcarCompletado()">
+        <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+        Marcar completado
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <div class="page-bg">
+    <div class="wrap">
+
+      <header class="hero">
+        <div class="badge">
+          <span class="dot"></span>
+          Progreso del módulo: {{ moduleProgress }}%
+        </div>
+
+        <h1>{{ data?.titulo }}</h1>
+        <p>{{ data?.descripcion }}</p>
+
+        <div class="progress-line">
+          <ion-progress-bar [value]="moduleProgress / 100"></ion-progress-bar>
+        </div>
+      </header>
+
+      <div class="glass">
+        <div class="grid">
+
+          <!-- Teoría -->
+          <section class="card">
+            <div class="card-head">
+              <div class="ic soft-indigo">
+                <ion-icon name="book-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Teoría</h2>
+                <p>Conceptos clave para entender el tema.</p>
+              </div>
+            </div>
+
+            <ul class="list">
+              <li *ngFor="let t of data?.teoria">{{ t }}</li>
+            </ul>
+          </section>
+
+          <!-- Claves -->
+          <section class="card">
+            <div class="card-head">
+              <div class="ic soft-slate">
+                <ion-icon name="sparkles-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Puntos clave</h2>
+                <p>Reglas prácticas que debes recordar.</p>
+              </div>
+            </div>
+
+            <ul class="list">
+              <li *ngFor="let c of data?.claves">{{ c }}</li>
+            </ul>
+          </section>
+
+          <!-- Ejemplos -->
+          <section class="card span-2">
+            <div class="card-head">
+              <div class="ic soft-emerald">
+                <ion-icon name="document-text-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Ejemplos</h2>
+                <p>Aplicación del tema en casos reales.</p>
+              </div>
+            </div>
+
+            <div class="examples" *ngFor="let ex of data?.ejemplos">
+              <h3>{{ ex.titulo }}</h3>
+              <ul class="list">
+                <li *ngFor="let it of ex.items">{{ it }}</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Actividad -->
+          <section class="card span-2">
+            <div class="card-head">
+              <div class="ic soft-amber">
+                <ion-icon name="create-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Actividad guiada</h2>
+                <p>{{ data?.actividad?.objetivo }}</p>
+              </div>
+            </div>
+
+            <div class="activity">
+              <p class="muted">{{ data?.actividad?.instrucciones }}</p>
+
+              <div class="activity-row" *ngFor="let f of data?.actividad?.frases; let i = index">
+                <div class="activity-text">
+                  <div class="label">Caso {{ i + 1 }}</div>
+                  <div class="phrase">{{ f.texto }}</div>
+                </div>
+
+                <div class="activity-actions">
+                  <ion-button size="small" fill="outline" (click)="toggleSolucion(i)">
+                    <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+                    Ver solución
+                  </ion-button>
+                </div>
+
+                <div class="solution" *ngIf="revealed[i]">
+                  <ion-icon name="checkbox-outline"></ion-icon>
+                  <span>{{ f.solucion }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Quiz -->
+          <section class="card span-2">
+            <div class="card-head">
+              <div class="ic soft-indigo">
+                <ion-icon name="ribbon-outline"></ion-icon>
+              </div>
+              <div>
+                <h2>Mini-evaluación</h2>
+                <p>Responde y revisa tu resultado al final.</p>
+              </div>
+            </div>
+
+            <div class="quiz">
+              <div class="q" *ngFor="let q of data?.quiz; let qi = index">
+                <div class="q-title">Pregunta {{ qi + 1 }}</div>
+                <div class="q-text">{{ q.q }}</div>
+
+                <div class="opts">
+                  <button
+                    class="opt"
+                    *ngFor="let opt of q.options; let oi = index"
+                    [class.selected]="answers[qi] === oi"
+                    (click)="selectAnswer(qi, oi)"
+                    [disabled]="submitted">
+                    {{ opt }}
+                  </button>
+                </div>
+
+                <div class="explain" *ngIf="submitted">
+                  <div class="explain-row">
+                    <ion-icon [name]="answers[qi] === q.answerIndex ? 'thumbs-up-outline' : 'help-circle-outline'"></ion-icon>
+                    <span>{{ q.explain }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="quiz-actions">
+                <ion-button (click)="submitQuiz()" [disabled]="submitted" class="primary">
+                  Finalizar evaluación
+                </ion-button>
+
+                <ion-button fill="outline" (click)="resetQuiz()">
+                  <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                  Reintentar
+                </ion-button>
+
+                <div class="score" *ngIf="submitted">
+                  Resultado: <b>{{ score }}</b> / <b>{{ data?.quiz?.length }}</b>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

@@ -9,7 +9,8 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
-  },  {
+  },
+  {
     path: 'gramatica',
     loadComponent: () => import('./page/gramatica/gramatica.page').then( m => m.GramaticaPage)
   },
@@ -33,5 +34,10 @@ export const routes: Routes = [
     path: 'lecciones',
     loadComponent: () => import('./page/lecciones/lecciones.page').then( m => m.LeccionesPage)
   },
+  {
+  path: 'gramatica/:id',
+  loadComponent: () =>
+    import('./page/gramatica/submodulo/submodulo.page').then((m) => m.GramaticaSubmoduloPage),
+},
 
 ];

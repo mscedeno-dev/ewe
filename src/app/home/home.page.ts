@@ -86,7 +86,12 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.recalcular();
     this.modulosFiltrados = [...this.modulos];
+    
   }
+ionViewWillEnter() {
+  this.recalcular();
+  this.filtrar();
+}
 
   filtrar() {
     const q = this.busqueda.trim().toLowerCase();
