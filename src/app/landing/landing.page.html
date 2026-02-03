@@ -1,0 +1,587 @@
+<ion-content [fullscreen]="true" class="landing-content">
+  
+  <!-- NAVBAR -->
+  <nav class="landing-navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <ion-icon name="school"></ion-icon>
+        <span class="brand-name">Piensa</span>
+      </div>
+      
+      <div class="navbar-menu">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#caracteristicas" class="nav-link">Características</a>
+        <a href="#modulos" class="nav-link">Módulos</a>
+        <a href="#testimonios" class="nav-link">Testimonios</a>
+      </div>
+      
+      <div class="navbar-actions">
+        <ion-button fill="clear" class="nav-btn" (click)="showAuth('login')">
+          Iniciar Sesión
+        </ion-button>
+        <ion-button class="nav-btn-primary" (click)="showAuth('register')">
+          Registrarse
+        </ion-button>
+      </div>
+      
+      <!-- Mobile Menu Button -->
+      <ion-button fill="clear" class="mobile-menu-btn" (click)="toggleMobileMenu()">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" [class.active]="mobileMenuOpen">
+      <a href="#inicio" class="mobile-link" (click)="toggleMobileMenu()">Inicio</a>
+      <a href="#caracteristicas" class="mobile-link" (click)="toggleMobileMenu()">Características</a>
+      <a href="#modulos" class="mobile-link" (click)="toggleMobileMenu()">Módulos</a>
+      <a href="#testimonios" class="mobile-link" (click)="toggleMobileMenu()">Testimonios</a>
+      <div class="mobile-actions">
+        <ion-button expand="block" fill="outline" (click)="showAuth('login')">
+          Iniciar Sesión
+        </ion-button>
+        <ion-button expand="block" (click)="showAuth('register')">
+          Registrarse
+        </ion-button>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="landing-wrapper">
+    
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="inicio">
+      <div class="hero-container">
+        
+        <!-- Left Side - Content -->
+        <div class="hero-left">
+          <div class="hero-badge">
+            <ion-icon name="sparkles"></ion-icon>
+            <span>Educación digital moderna</span>
+          </div>
+          
+          <h1 class="hero-title">
+            Domina el <span class="gradient-text">español</span> como nunca antes
+          </h1>
+          
+          <p class="hero-subtitle">
+            Aprende gramática, ortografía y redacción de forma interactiva. 
+            Diseñado para jóvenes que quieren mejorar sus habilidades de comunicación.
+          </p>
+          
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">6</div>
+              <div class="stat-label">Módulos</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-number">30+</div>
+              <div class="stat-label">Lecciones</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Gratis</div>
+            </div>
+          </div>
+          
+          <div class="hero-cta">
+            <ion-button expand="block" size="large" class="cta-primary" (click)="showAuth('register')">
+              <ion-icon name="rocket" slot="start"></ion-icon>
+              Comenzar ahora
+            </ion-button>
+            <ion-button expand="block" size="large" fill="outline" class="cta-secondary" (click)="showAuth('login')">
+              Ya tengo cuenta
+            </ion-button>
+          </div>
+          
+          <!-- Trusted by section -->
+          <div class="trusted-by">
+            <span class="trusted-text">Más de 500 estudiantes ya confían en nosotros</span>
+            <div class="user-avatars">
+              <div class="avatar"></div>
+              <div class="avatar"></div>
+              <div class="avatar"></div>
+              <div class="avatar"></div>
+              <div class="avatar more">+500</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Side - Visual -->
+        <div class="hero-right">
+          <div class="hero-card-stack">
+            <div class="floating-card card-1">
+              <ion-icon name="book-outline"></ion-icon>
+              <div class="card-content">
+                <div class="card-title">Gramática</div>
+                <div class="card-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                  </div>
+                  <span>75%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="floating-card card-2">
+              <ion-icon name="pencil-outline"></ion-icon>
+              <div class="card-content">
+                <div class="card-title">Ortografía</div>
+                <div class="card-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                  </div>
+                  <span>60%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="floating-card card-3">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <div class="card-content">
+                <div class="card-title">Redacción</div>
+                <div class="card-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%"></div>
+                  </div>
+                  <span>90%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- FEATURES SECTION -->
+    <section class="features-section" id="caracteristicas">
+      <div class="section-header">
+        <h2>¿Por qué elegir Piensa?</h2>
+        <p>Todo lo que necesitas para mejorar tu español</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon purple">
+            <ion-icon name="speedometer-outline"></ion-icon>
+          </div>
+          <h3>Aprende a tu ritmo</h3>
+          <p>Avanza según tu disponibilidad y nivel de conocimiento</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon blue">
+            <ion-icon name="trophy-outline"></ion-icon>
+          </div>
+          <h3>Sistema de progreso</h3>
+          <p>Visualiza tus logros y mantén tu motivación alta</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon green">
+            <ion-icon name="flash-outline"></ion-icon>
+          </div>
+          <h3>Contenido interactivo</h3>
+          <p>Ejercicios prácticos y ejemplos de la vida real</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon orange">
+            <ion-icon name="phone-portrait-outline"></ion-icon>
+          </div>
+          <h3>Acceso total</h3>
+          <p>Estudia desde cualquier dispositivo, en cualquier momento</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works-section">
+      <div class="section-header">
+        <h2>¿Cómo funciona?</h2>
+        <p>Comienza tu viaje de aprendizaje en 3 simples pasos</p>
+      </div>
+      
+      <div class="steps-container">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon">
+            <ion-icon name="person-add-outline"></ion-icon>
+          </div>
+          <h3>Crea tu cuenta</h3>
+          <p>Regístrate gratis en menos de un minuto</p>
+        </div>
+        
+        <div class="step-arrow">
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon">
+            <ion-icon name="grid-outline"></ion-icon>
+          </div>
+          <h3>Elige tu módulo</h3>
+          <p>Selecciona el tema que quieres dominar</p>
+        </div>
+        
+        <div class="step-arrow">
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon">
+            <ion-icon name="rocket-outline"></ion-icon>
+          </div>
+          <h3>Comienza a aprender</h3>
+          <p>Avanza a tu ritmo y sigue tu progreso</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- MODULES PREVIEW -->
+    <section class="modules-section" id="modulos">
+      <div class="section-header">
+        <h2>Explora nuestros módulos</h2>
+        <p>Contenido estructurado para un aprendizaje completo</p>
+      </div>
+      
+      <div class="modules-grid">
+        <div class="module-preview" *ngFor="let modulo of modulosDestacados" (click)="showAuthForModule()">
+          <div class="module-header" [class]="modulo.theme">
+            <ion-icon [name]="modulo.icon"></ion-icon>
+            <span class="module-badge">{{ modulo.nivel }}</span>
+          </div>
+          <div class="module-body">
+            <h3>{{ modulo.titulo }}</h3>
+            <p>{{ modulo.descripcion }}</p>
+            <div class="module-meta">
+              <span>
+                <ion-icon name="document-outline"></ion-icon>
+                {{ modulo.lecciones }} lecciones
+              </span>
+              <span>
+                <ion-icon name="time-outline"></ion-icon>
+                2-3 horas
+              </span>
+            </div>
+            <div class="module-footer">
+              <ion-button fill="clear" size="small">
+                Ver más
+                <ion-icon name="arrow-forward" slot="end"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section" id="testimonios">
+      <div class="section-header">
+        <h2>Lo que dicen nuestros estudiantes</h2>
+        <p>Historias reales de personas que mejoraron su español</p>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-rating">
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+          </div>
+          <p class="testimonial-text">
+            "Increíble plataforma. Me ayudó a mejorar mi ortografía para mis exámenes universitarios. Los ejercicios son muy prácticos."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MA</div>
+            <div class="author-info">
+              <div class="author-name">María Andrade</div>
+              <div class="author-role">Estudiante de Comunicación</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-rating">
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+          </div>
+          <p class="testimonial-text">
+            "La sección de redacción me cambió la vida. Ahora escribo ensayos con mucha más confianza y claridad."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">CR</div>
+            <div class="author-info">
+              <div class="author-name">Carlos Ramírez</div>
+              <div class="author-role">Estudiante de Derecho</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-rating">
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon name="star"></ion-icon>
+          </div>
+          <p class="testimonial-text">
+            "Perfecto para preparar exámenes. Los módulos están super bien organizados y el sistema de progreso me motiva mucho."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">LS</div>
+            <div class="author-info">
+              <div class="author-name">Laura Sánchez</div>
+              <div class="author-role">Estudiante de Literatura</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- STATS SECTION -->
+    <section class="stats-banner">
+      <div class="stats-banner-content">
+        <div class="stat-box">
+          <div class="stat-value">500+</div>
+          <div class="stat-label">Estudiantes activos</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">10,000+</div>
+          <div class="stat-label">Ejercicios completados</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">4.9/5</div>
+          <div class="stat-label">Calificación promedio</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">95%</div>
+          <div class="stat-label">Tasa de satisfacción</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA FINAL -->
+    <section class="cta-section">
+      <div class="cta-container">
+        <div class="cta-content">
+          <h2>¿Listo para empezar?</h2>
+          <p>Únete a cientos de estudiantes que ya están mejorando su español</p>
+          <div class="cta-buttons">
+            <ion-button size="large" class="cta-primary" (click)="showAuth('register')">
+              <ion-icon name="person-add" slot="start"></ion-icon>
+              Crear cuenta gratis
+            </ion-button>
+          </div>
+          <p class="cta-note">No se requiere tarjeta de crédito • Acceso inmediato</p>
+        </div>
+        <div class="cta-decoration">
+          <div class="decoration-circle circle-1"></div>
+          <div class="decoration-circle circle-2"></div>
+          <div class="decoration-circle circle-3"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <ion-icon name="school"></ion-icon>
+            <span>Piensa</span>
+          </div>
+          <p>Aprende español de forma moderna e interactiva</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Producto</h4>
+            <a href="#caracteristicas">Características</a>
+            <a href="#modulos">Módulos</a>
+            <a href="#testimonios">Testimonios</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Empresa</h4>
+            <a href="#">Sobre nosotros</a>
+            <a href="#">Blog</a>
+            <a href="#">Contacto</a>
+          </div>
+          
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+            <a href="#">Cookies</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Piensa. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+    
+  </div>
+  
+  <!-- ============================================
+       AUTH MODAL - CON LABELS VISIBLES
+  ============================================ -->
+  <ion-modal [isOpen]="showAuthModal" (didDismiss)="closeAuth()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ authMode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta' }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAuth()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content class="auth-modal-content">
+        <div class="auth-form">
+          
+          <!-- ==================== LOGIN FORM ==================== -->
+          <div *ngIf="authMode === 'login'" class="form-container">
+            <div class="form-header">
+              <ion-icon name="log-in-outline"></ion-icon>
+              <h2>Bienvenido de vuelta</h2>
+              <p>Ingresa tus datos para continuar</p>
+            </div>
+            
+            <!-- Email con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="mail-outline"></ion-icon>
+                Correo electrónico
+              </label>
+              <ion-input
+                type="email"
+                placeholder="ejemplo@correo.com"
+                [(ngModel)]="loginData.email"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <!-- Contraseña con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                Contraseña
+              </label>
+              <ion-input
+                type="password"
+                placeholder="••••••••"
+                [(ngModel)]="loginData.password"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <ion-button expand="block" size="large" (click)="handleLogin()">
+              Iniciar Sesión
+            </ion-button>
+            
+            <div class="form-footer">
+              <p>¿No tienes cuenta? <a (click)="switchAuth('register')">Regístrate aquí</a></p>
+            </div>
+          </div>
+          
+          <!-- ==================== REGISTER FORM ==================== -->
+          <div *ngIf="authMode === 'register'" class="form-container">
+            <div class="form-header">
+              <ion-icon name="person-add-outline"></ion-icon>
+              <h2>Crea tu cuenta</h2>
+              <p>Comienza tu viaje de aprendizaje</p>
+            </div>
+            
+            <!-- Nombre con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="person-outline"></ion-icon>
+                Nombre completo
+              </label>
+              <ion-input
+                type="text"
+                placeholder="Juan Pérez"
+                [(ngModel)]="registerData.name"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <!-- Email con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="mail-outline"></ion-icon>
+                Correo electrónico
+              </label>
+              <ion-input
+                type="email"
+                placeholder="ejemplo@correo.com"
+                [(ngModel)]="registerData.email"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <!-- Contraseña con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                Contraseña
+              </label>
+              <ion-input
+                type="password"
+                placeholder="Mínimo 6 caracteres"
+                [(ngModel)]="registerData.password"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <!-- Confirmar Contraseña con Label Visible -->
+            <div class="form-group">
+              <label class="input-label">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                Confirmar contraseña
+              </label>
+              <ion-input
+                type="password"
+                placeholder="Repite tu contraseña"
+                [(ngModel)]="registerData.confirmPassword"
+                fill="outline"
+                class="custom-input">
+              </ion-input>
+            </div>
+            
+            <ion-button expand="block" size="large" (click)="handleRegister()">
+              Crear Cuenta
+            </ion-button>
+            
+            <div class="form-footer">
+              <p>¿Ya tienes cuenta? <a (click)="switchAuth('login')">Inicia sesión aquí</a></p>
+            </div>
+          </div>
+          
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+</ion-content>

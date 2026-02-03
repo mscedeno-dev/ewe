@@ -408,4 +408,18 @@ export class PuntuacionSubmoduloPage implements OnInit, OnDestroy {
   irA(id: PuntuacionId) {
     this.router.navigate(['/puntuacion', id]); ;
   }
+  // Métodos helper para evitar errores de TypeScript
+  getQuizLength(): number {
+    return this.data?.quiz?.length || 0;
+  }
+
+  getScorePercentage(): number {
+    const total = this.getQuizLength();
+    if (total === 0) return 0;
+    return Math.round((this.score / total) * 100);
+  }
+
+  hasQuiz(): boolean {
+    return this.data?.quiz && this.data.quiz.length > 0;
+  }
 }

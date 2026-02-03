@@ -1,7 +1,7 @@
 <ion-header class="topbar" translucent="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/puntuacion"></ion-back-button>
+      <ion-back-button defaultHref="/ortografia"></ion-back-button>
     </ion-buttons>
 
     <ion-title>{{ data?.titulo }}</ion-title>
@@ -39,152 +39,265 @@
       </header>
 
       <div class="glass">
-        <div class="grid">
-
-          <!-- Teoría -->
-          <section class="card">
-            <div class="card-head">
-              <div class="ic soft-indigo">
-                <ion-icon name="book-outline"></ion-icon>
-              </div>
-              <div>
-                <h2>Teoría</h2>
-                <p>Conceptos clave para entender el tema.</p>
-              </div>
-            </div>
-
-            <ul class="list">
-              <li *ngFor="let t of data?.teoria">{{ t }}</li>
-            </ul>
-          </section>
-
-          <!-- Claves -->
-          <section class="card">
-            <div class="card-head">
-              <div class="ic soft-slate">
-                <ion-icon name="sparkles-outline"></ion-icon>
-              </div>
-              <div>
-                <h2>Puntos clave</h2>
-                <p>Reglas prácticas que debes recordar.</p>
+        
+        <!-- ==================== MAPA MENTAL VISUAL ==================== -->
+        <section class="mindmap-section">
+          <div class="section-title">
+            <ion-icon name="git-network-outline"></ion-icon>
+            <h2>Mapa Conceptual</h2>
+            <p>Visualiza la estructura del tema</p>
+          </div>
+          
+          <div class="mindmap-container">
+            <!-- Nodo Central -->
+            <div class="mindmap-center">
+              <div class="center-node">
+                <ion-icon name="bulb"></ion-icon>
+                <h3>{{ data?.titulo }}</h3>
               </div>
             </div>
-
-            <ul class="list">
-              <li *ngFor="let c of data?.claves">{{ c }}</li>
-            </ul>
-          </section>
-
-          <!-- Ejemplos -->
-          <section class="card span-2">
-            <div class="card-head">
-              <div class="ic soft-emerald">
-                <ion-icon name="document-text-outline"></ion-icon>
-              </div>
-              <div>
-                <h2>Ejemplos</h2>
-                <p>Aplicación del tema en casos reales.</p>
-              </div>
-            </div>
-
-            <div class="examples" *ngFor="let ex of data?.ejemplos">
-              <h3>{{ ex.titulo }}</h3>
-              <ul class="list">
-                <li *ngFor="let it of ex.items">{{ it }}</li>
-              </ul>
-            </div>
-          </section>
-
-          <!-- Actividad -->
-          <section class="card span-2">
-            <div class="card-head">
-              <div class="ic soft-amber">
-                <ion-icon name="create-outline"></ion-icon>
-              </div>
-              <div>
-                <h2>Actividad guiada</h2>
-                <p>{{ data?.actividad?.objetivo }}</p>
-              </div>
-            </div>
-
-            <div class="activity">
-              <p class="muted">{{ data?.actividad?.instrucciones }}</p>
-
-              <div class="activity-row" *ngFor="let f of data?.actividad?.frases; let i = index">
-                <div class="activity-text">
-                  <div class="label">Caso {{ i + 1 }}</div>
-                  <div class="phrase">{{ f.texto }}</div>
-                </div>
-
-                <div class="activity-actions">
-                  <ion-button size="small" fill="outline" (click)="toggleSolucion(i)">
-                    <ion-icon name="help-circle-outline" slot="start"></ion-icon>
-                    Ver solución
-                  </ion-button>
-                </div>
-
-                <div class="solution" *ngIf="revealed[i]">
-                  <ion-icon name="checkbox-outline"></ion-icon>
-                  <span>{{ f.solucion }}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Quiz -->
-          <section class="card span-2">
-            <div class="card-head">
-              <div class="ic soft-indigo">
-                <ion-icon name="ribbon-outline"></ion-icon>
-              </div>
-              <div>
-                <h2>Mini-evaluación</h2>
-                <p>Responde y revisa tu resultado al final.</p>
-              </div>
-            </div>
-
-            <div class="quiz">
-              <div class="q" *ngFor="let q of data?.quiz; let qi = index">
-                <div class="q-title">Pregunta {{ qi + 1 }}</div>
-                <div class="q-text">{{ q.q }}</div>
-
-                <div class="opts">
-                  <button
-                    class="opt"
-                    *ngFor="let opt of q.options; let oi = index"
-                    [class.selected]="answers[qi] === oi"
-                    (click)="selectAnswer(qi, oi)"
-                    [disabled]="submitted">
-                    {{ opt }}
-                  </button>
-                </div>
-
-                <div class="explain" *ngIf="submitted">
-                  <div class="explain-row">
-                    <ion-icon [name]="answers[qi] === q.answerIndex ? 'thumbs-up-outline' : 'help-circle-outline'"></ion-icon>
-                    <span>{{ q.explain }}</span>
+            
+            <!-- Ramas del Mapa Mental -->
+            <div class="mindmap-branches">
+              
+              <!-- Rama 1: Teoría -->
+              <div class="branch branch-1">
+                <div class="branch-line"></div>
+                <div class="branch-node">
+                  <div class="node-icon purple">
+                    <ion-icon name="book-outline"></ion-icon>
+                  </div>
+                  <div class="node-content">
+                    <h4>Teoría</h4>
+                    <ul class="mini-list">
+                      <li *ngFor="let t of data?.teoria | slice:0:3">{{ t }}</li>
+                    </ul>
                   </div>
                 </div>
               </div>
+              
+              <!-- Rama 2: Puntos Clave -->
+              <div class="branch branch-2">
+                <div class="branch-line"></div>
+                <div class="branch-node">
+                  <div class="node-icon blue">
+                    <ion-icon name="sparkles-outline"></ion-icon>
+                  </div>
+                  <div class="node-content">
+                    <h4>Puntos Clave</h4>
+                    <ul class="mini-list">
+                      <li *ngFor="let c of data?.claves | slice:0:3">{{ c }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Rama 3: Ejemplos -->
+              <div class="branch branch-3">
+                <div class="branch-line"></div>
+                <div class="branch-node">
+                  <div class="node-icon green">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="node-content">
+                    <h4>Ejemplos</h4>
+                    <div class="example-preview" *ngIf="data?.ejemplos?.[0]">
+                      <span>{{ data.ejemplos[0].titulo }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </section>
 
-              <div class="quiz-actions">
-                <ion-button (click)="submitQuiz()" [disabled]="submitted" class="primary">
-                  Finalizar evaluación
-                </ion-button>
-
-                <ion-button fill="outline" (click)="resetQuiz()">
-                  <ion-icon name="refresh-outline" slot="start"></ion-icon>
-                  Reintentar
-                </ion-button>
-
-                <div class="score" *ngIf="submitted">
-                  Resultado: <b>{{ score }}</b> / <b>{{ data?.quiz?.length }}</b>
+        <!-- ==================== ORGANIZADOR GRÁFICO ==================== -->
+        <section class="organizer-section">
+          <div class="section-title">
+            <ion-icon name="grid-outline"></ion-icon>
+            <h2>Organizador Visual</h2>
+            <p>Información estructurada para mejor comprensión</p>
+          </div>
+          
+          <div class="organizer-grid">
+            
+            <!-- Tarjeta: Teoría -->
+            <div class="org-card card-expand">
+              <div class="org-header purple-gradient">
+                <ion-icon name="book-outline"></ion-icon>
+                <h3>Teoría</h3>
+              </div>
+              <div class="org-body">
+                <p class="org-subtitle">Conceptos clave para entender el tema</p>
+                <div class="visual-list">
+                  <div class="list-item" *ngFor="let t of data?.teoria; let i = index">
+                    <div class="item-number">{{ i + 1 }}</div>
+                    <div class="item-text">{{ t }}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </section>
 
-        </div>
+            <!-- Tarjeta: Puntos Clave -->
+            <div class="org-card">
+              <div class="org-header blue-gradient">
+                <ion-icon name="sparkles-outline"></ion-icon>
+                <h3>Puntos Clave</h3>
+              </div>
+              <div class="org-body">
+                <p class="org-subtitle">Reglas que debes recordar</p>
+                <div class="highlight-list">
+                  <div class="highlight-item" *ngFor="let c of data?.claves">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <span>{{ c }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Ejemplos -->
+            <div class="org-card card-wide">
+              <div class="org-header green-gradient">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <h3>Ejemplos Prácticos</h3>
+              </div>
+              <div class="org-body">
+                <p class="org-subtitle">Aplicación en casos reales</p>
+                <div class="examples-visual">
+                  <div class="example-box" *ngFor="let ex of data?.ejemplos">
+                    <div class="example-title">
+                      <ion-icon name="bulb-outline"></ion-icon>
+                      {{ ex.titulo }}
+                    </div>
+                    <div class="example-items">
+                      <div class="example-tag" *ngFor="let it of ex.items">
+                        {{ it }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== ACTIVIDAD VISUAL ==================== -->
+        <section class="activity-visual-section">
+          <div class="section-title">
+            <ion-icon name="create-outline"></ion-icon>
+            <h2>Práctica Interactiva</h2>
+            <p>{{ data?.actividad?.objetivo }}</p>
+          </div>
+
+          <div class="activity-steps">
+            <div class="step-instruction">
+              <ion-icon name="information-circle"></ion-icon>
+              <span>{{ data?.actividad?.instrucciones }}</span>
+            </div>
+
+            <div class="activity-cards">
+              <div class="activity-card" *ngFor="let f of data?.actividad?.frases; let i = index">
+                <div class="card-number">{{ i + 1 }}</div>
+                <div class="card-content">
+                  <div class="card-text">{{ f.texto }}</div>
+                  <ion-button 
+                    size="small" 
+                    fill="outline" 
+                    (click)="toggleSolucion(i)"
+                    [class.revealed]="revealed[i]">
+                    <ion-icon [name]="revealed[i] ? 'eye-off-outline' : 'eye-outline'" slot="start"></ion-icon>
+                    {{ revealed[i] ? 'Ocultar' : 'Ver' }} solución
+                  </ion-button>
+                  <div class="card-solution" *ngIf="revealed[i]">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <span>{{ f.solucion }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== MINI QUIZ ==================== -->
+        <section class="quiz-visual-section">
+          <div class="section-title">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            <h2>Evaluación</h2>
+            <p>Pon a prueba lo que has aprendido</p>
+          </div>
+
+          <div class="quiz-container">
+            <div class="quiz-card" *ngFor="let q of data?.quiz; let qi = index">
+              <div class="quiz-header">
+                <span class="quiz-badge">Pregunta {{ qi + 1 }}</span>
+                <ion-icon 
+                  *ngIf="submitted" 
+                  [name]="answers[qi] === q.answerIndex ? 'checkmark-circle' : 'close-circle'"
+                  [class.correct]="answers[qi] === q.answerIndex"
+                  [class.incorrect]="answers[qi] !== q.answerIndex">
+                </ion-icon>
+              </div>
+
+              <div class="quiz-question">{{ q.q }}</div>
+
+              <div class="quiz-options">
+                <button
+                  class="quiz-option"
+                  *ngFor="let opt of q.options; let oi = index"
+                  [class.selected]="answers[qi] === oi"
+                  [class.correct]="submitted && oi === q.answerIndex"
+                  [class.wrong]="submitted && answers[qi] === oi && oi !== q.answerIndex"
+                  (click)="selectAnswer(qi, oi)"
+                  [disabled]="submitted">
+                  <div class="option-letter">{{ ['A', 'B', 'C', 'D'][oi] }}</div>
+                  <div class="option-text">{{ opt }}</div>
+                  <ion-icon 
+                    *ngIf="submitted && oi === q.answerIndex" 
+                    name="checkmark-circle" 
+                    class="option-icon">
+                  </ion-icon>
+                </button>
+              </div>
+
+              <div class="quiz-explain" *ngIf="submitted">
+                <ion-icon name="bulb-outline"></ion-icon>
+                <span>{{ q.explain }}</span>
+              </div>
+            </div>
+
+            <div class="quiz-actions">
+              <ion-button 
+                size="large"
+                (click)="submitQuiz()" 
+                [disabled]="submitted" 
+                class="primary">
+                <ion-icon name="send" slot="start"></ion-icon>
+                Finalizar evaluación
+              </ion-button>
+
+              <ion-button 
+                size="large"
+                fill="outline" 
+                (click)="resetQuiz()">
+                <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                Reintentar
+              </ion-button>
+
+              <div class="quiz-score" *ngIf="submitted">
+                <div class="score-circle">
+                  <div class="score-number">{{ score }}/{{ data?.quiz?.length }}</div>
+                  <div class="score-label">Tu Resultado</div>
+                </div>
+                <div class="score-percentage">
+  {{ getScorePercentage() }}%
+</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
 
     </div>

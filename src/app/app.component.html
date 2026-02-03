@@ -1,3 +1,101 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  
+  <!-- SIDEBAR MENU - Solo visible cuando NO es landing -->
+  <ion-menu contentId="main-content" type="overlay" *ngIf="!isLandingPage">
+    <ion-content class="sidebar-menu">
+      
+      <!-- User Profile -->
+      <div class="user-profile">
+        <ion-avatar class="user-avatar">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </ion-avatar>
+        <div class="user-info">
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-email">{{ userEmail }}</div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <ion-list lines="none" class="menu-navigation">
+        <ion-item 
+          *ngFor="let item of menuItems" 
+          button 
+          detail="false"
+          (click)="go(item.route)">
+          <ion-icon [name]="item.icon" slot="start"></ion-icon>
+          <ion-label>{{ item.title }}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- Bottom Actions -->
+      <div class="menu-footer">
+        <ion-item button detail="false" lines="none">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Configuración</ion-label>
+        </ion-item>
+        
+        <ion-item button detail="false" lines="none" (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Cerrar Sesión</ion-label>
+        </ion-item>
+      </div>
+
+    </ion-content>
+  </ion-menu>
+
+  <!-- TOPBAR - Solo visible cuando NO es landing -->
+  <ng-container *ngIf="!isLandingPage">
+    <ion-header class="modern-topbar">
+      <ion-toolbar>
+        
+        <!-- Left Side -->
+        <ion-buttons slot="start">
+          <!-- Botón back (solo cuando aplica) -->
+          <ion-button *ngIf="showBack" (click)="goBack()" fill="clear" class="back-btn">
+            <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+          
+          <!-- Menu button (siempre visible) -->
+          <ion-menu-button class="menu-btn"></ion-menu-button>
+        </ion-buttons>
+
+        <!-- Center - Logo & Title -->
+        <ion-title class="topbar-title">
+          <div class="title-container">
+            <div class="app-logo">
+              <ion-icon name="school-outline"></ion-icon>
+            </div>
+            <span class="app-name">{{ pageTitle }}</span>
+          </div>
+        </ion-title>
+
+        <!-- Right Side - Quick Actions -->
+        <ion-buttons slot="end" class="quick-actions">
+          
+          <!-- Dashboard -->
+          <ion-button fill="clear" (click)="go('/dashboard')" class="action-btn">
+            <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+
+          <!-- Stats -->
+          <ion-button fill="clear" class="action-btn">
+            <ion-icon name="stats-chart-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+
+          <!-- User Profile -->
+          <ion-button fill="clear" class="action-btn profile-btn">
+            <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+
+        </ion-buttons>
+
+      </ion-toolbar>
+    </ion-header>
+  </ng-container>
+
+  <!-- MAIN CONTENT -->
+  <ion-content [fullscreen]="true" class="app-content" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
+  
 </ion-app>

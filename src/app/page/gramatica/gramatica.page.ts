@@ -57,4 +57,5 @@ export class GramaticaPage {
   irModulo(ruta: string) {
     this.router.navigate([ruta]);
   }
+  
 }

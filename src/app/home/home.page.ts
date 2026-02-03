@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonIcon, IonProgressBar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 
 import {
@@ -21,13 +21,11 @@ import {
   shapesOutline,
   documentTextOutline,
   libraryOutline,
+  trendingUpOutline,
+  timeOutline,
+  starOutline,
 } from 'ionicons/icons';
 
-/**
- * ✅ OJO: tu ruta real es /compresion (sin "n")
- * entonces el id también debe ser compresion para que:
- * progress_compresion coincida con localStorage
- */
 type ModuloId =
   | 'gramatica'
   | 'ortografia'
@@ -52,27 +50,82 @@ interface ModuloCard {
   standalone: true,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [CommonModule, FormsModule, IonContent, IonButton, IonIcon],
+  imports: [CommonModule, FormsModule, IonContent, IonButton, IonIcon, IonProgressBar],
 })
 export class HomePage implements OnInit {
   busqueda = '';
+  userName = 'Usuario';
+  greeting = 'Buenos días';
 
   modulos: ModuloCard[] = [
-    { id: 'gramatica',   titulo: 'Gramática',   nivel: 'Nivel fácil',   subs: 5, route: '/gramatica',   theme: 'theme-green',  icon: 'book-outline',          porcentaje: 0 },
-    { id: 'ortografia',  titulo: 'Ortografía',  nivel: 'Nivel fácil',   subs: 5, route: '/ortografia',  theme: 'theme-green',  icon: 'pencil-outline',        porcentaje: 0 },
-    { id: 'puntuacion',  titulo: 'Puntuación',  nivel: 'Nivel medio',   subs: 5, route: '/puntuacion',  theme: 'theme-amber',  icon: 'shapes-outline',        porcentaje: 0 },
-    { id: 'redaccion',   titulo: 'Redacción',   nivel: 'Nivel medio',   subs: 5, route: '/redaccion',   theme: 'theme-amber',  icon: 'document-text-outline', porcentaje: 0 },
-
-    // ✅ CORREGIDO: era 'comprension' y '/comprension'
-    { id: 'compresion',  titulo: 'Comprensión', nivel: 'Nivel difícil', subs: 5, route: '/compresion',  theme: 'theme-red',    icon: 'library-outline',       porcentaje: 0 },
-
-    { id: 'lecciones',   titulo: 'Lecciones',   nivel: 'Módulo final',  subs: 0, route: '/lecciones',   theme: 'theme-indigo', icon: 'school',                porcentaje: 0 },
+    { 
+      id: 'gramatica', 
+      titulo: 'Gramática', 
+      nivel: 'Nivel básico', 
+      subs: 5, 
+      route: '/gramatica', 
+      theme: 'theme-green', 
+      icon: 'book-outline', 
+      porcentaje: 0 
+    },
+    { 
+      id: 'ortografia', 
+      titulo: 'Ortografía', 
+      nivel: 'Nivel básico', 
+      subs: 5, 
+      route: '/ortografia', 
+      theme: 'theme-green', 
+      icon: 'pencil-outline', 
+      porcentaje: 0 
+    },
+    { 
+      id: 'puntuacion', 
+      titulo: 'Puntuación', 
+      nivel: 'Nivel intermedio', 
+      subs: 5, 
+      route: '/puntuacion', 
+      theme: 'theme-amber', 
+      icon: 'shapes-outline', 
+      porcentaje: 0 
+    },
+    { 
+      id: 'redaccion', 
+      titulo: 'Redacción', 
+      nivel: 'Nivel intermedio', 
+      subs: 5, 
+      route: '/redaccion', 
+      theme: 'theme-amber', 
+      icon: 'document-text-outline', 
+      porcentaje: 0 
+    },
+    { 
+      id: 'compresion', 
+      titulo: 'Comprensión', 
+      nivel: 'Nivel avanzado', 
+      subs: 5, 
+      route: '/compresion', 
+      theme: 'theme-red', 
+      icon: 'library-outline', 
+      porcentaje: 0 
+    },
+    { 
+      id: 'lecciones', 
+      titulo: 'Lecciones', 
+      nivel: 'Evaluación final', 
+      subs: 0, 
+      route: '/lecciones', 
+      theme: 'theme-indigo', 
+      icon: 'school', 
+      porcentaje: 0 
+    },
   ];
 
   modulosFiltrados: ModuloCard[] = [];
 
   progresoGeneral = 0;
   modulosCompletados = 0;
+  racha = 0; // días consecutivos
+  tiempoEstudio = 0; // minutos totales
 
   ringBackground = 'conic-gradient(#e2e8f0 0deg, #e2e8f0 360deg)';
 
@@ -93,10 +146,15 @@ export class HomePage implements OnInit {
       shapesOutline,
       documentTextOutline,
       libraryOutline,
+      trendingUpOutline,
+      timeOutline,
+      starOutline,
     });
   }
 
   ngOnInit() {
+    this.loadUserData();
+    this.setGreeting();
     this.recalcular();
     this.modulosFiltrados = [...this.modulos];
   }
@@ -104,6 +162,31 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.recalcular();
     this.filtrar();
+  }
+
+  loadUserData() {
+    const name = localStorage.getItem('userName');
+    if (name) {
+      this.userName = name.split(' ')[0]; // Solo primer nombre
+    }
+
+    // Cargar estadísticas (simuladas por ahora)
+    const savedRacha = localStorage.getItem('racha');
+    const savedTiempo = localStorage.getItem('tiempoEstudio');
+    
+    if (savedRacha) this.racha = parseInt(savedRacha);
+    if (savedTiempo) this.tiempoEstudio = parseInt(savedTiempo);
+  }
+
+  setGreeting() {
+    const hora = new Date().getHours();
+    if (hora < 12) {
+      this.greeting = '¡Buenos días';
+    } else if (hora < 19) {
+      this.greeting = '¡Buenas tardes';
+    } else {
+      this.greeting = '¡Buenas noches';
+    }
   }
 
   filtrar() {
@@ -118,9 +201,16 @@ export class HomePage implements OnInit {
   }
 
   resetearProgreso() {
-    localStorage.clear();
-    this.recalcular();
-    this.filtrar();
+    if (confirm('¿Estás seguro de que quieres resetear todo tu progreso?')) {
+      // Limpiar solo el progreso, no la autenticación
+      const modulosIds: ModuloId[] = ['gramatica', 'ortografia', 'puntuacion', 'redaccion', 'compresion', 'lecciones'];
+      modulosIds.forEach(id => {
+        localStorage.removeItem(`progress_${id}`);
+      });
+      
+      this.recalcular();
+      this.filtrar();
+    }
   }
 
   private recalcular() {
@@ -135,7 +225,7 @@ export class HomePage implements OnInit {
     this.modulosCompletados = this.modulos.filter((m) => m.porcentaje >= 100).length;
 
     const deg = Math.round((this.progresoGeneral / 100) * 360);
-    this.ringBackground = `conic-gradient(#4f46e5 0deg, #4f46e5 ${deg}deg, #e2e8f0 ${deg}deg, #e2e8f0 360deg)`;
+    this.ringBackground = `conic-gradient(#667eea 0deg, #667eea ${deg}deg, #e2e8f0 ${deg}deg, #e2e8f0 360deg)`;
 
     this.modulosFiltrados = [...this.modulos];
   }
