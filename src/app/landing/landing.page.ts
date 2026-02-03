@@ -12,8 +12,17 @@ import {
   IonTitle,
   IonButtons,
   IonInput,
+  IonSearchbar,
+  IonAvatar,
+  IonProgressBar,
+  IonMenu,
+  IonMenuButton,
+  IonList,
+  IonItem,
+  IonLabel,
   AlertController,
   ToastController,
+  MenuController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -37,7 +46,6 @@ import {
   school,
   menuOutline,
   arrowForward,
-  arrowForwardOutline,
   gridOutline,
   rocketOutline,
   timeOutline,
@@ -47,6 +55,13 @@ import {
   closeOutline,
   chevronDown,
   logIn,
+  personCircleOutline,
+  logOutOutline,
+  barChartOutline,
+  checkmarkDoneOutline,
+  searchOutline,
+  homeOutline,
+  settingsOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -66,13 +81,31 @@ import {
     IonTitle,
     IonButtons,
     IonInput,
+    IonSearchbar,
+    IonAvatar,
+    IonProgressBar,
+    IonMenu,
+    IonMenuButton,
+    IonList,
+    IonItem,
+    IonLabel,
   ],
 })
 export class LandingPage implements OnInit {
+  // Estado de autenticación
+  isAuthenticated = false;
+  
+  // Datos del usuario
+  userName = 'Usuario';
+  userEmail = 'usuario@email.com';
+  
+  // Modal de autenticación
   showAuthModal = false;
   authMode: 'login' | 'register' = 'login';
   mobileMenuOpen = false;
+  sidebarOpen = false;
 
+  // Forms
   loginData = {
     email: '',
     password: '',
@@ -85,103 +118,125 @@ export class LandingPage implements OnInit {
     confirmPassword: '',
   };
 
-  modulosDestacados = [
+  // Stats del dashboard
+  overallProgress = 0;
+  completedModules = 0;
+  searchQuery = '';
+
+  // Módulos
+  modulos = [
     {
+      id: 'gramatica',
       titulo: 'Gramática',
-      descripcion: 'Domina las estructuras fundamentales del idioma español',
+      descripcion: 'Domina las estructuras fundamentales',
       nivel: 'Básico',
       lecciones: 5,
       icon: 'book-outline',
-      theme: 'theme-green',
+      color: '#10b981',
+      progress: 75,
+      route: '/gramatica',
     },
     {
+      id: 'ortografia',
       titulo: 'Ortografía',
-      descripcion: 'Aprende las reglas de acentuación y escritura correcta',
+      descripcion: 'Reglas de acentuación y escritura',
       nivel: 'Básico',
       lecciones: 5,
       icon: 'pencil-outline',
-      theme: 'theme-green',
+      color: '#3b82f6',
+      progress: 60,
+      route: '/ortografia',
     },
     {
+      id: 'puntuacion',
       titulo: 'Puntuación',
-      descripcion: 'Usa correctamente los signos de puntuación',
+      descripcion: 'Uso correcto de signos',
       nivel: 'Intermedio',
       lecciones: 5,
       icon: 'shapes-outline',
-      theme: 'theme-amber',
+      color: '#f59e0b',
+      progress: 0,
+      route: '/puntuacion',
     },
     {
+      id: 'redaccion',
       titulo: 'Redacción',
-      descripcion: 'Mejora tu estilo y coherencia al escribir',
+      descripcion: 'Mejora tu estilo al escribir',
       nivel: 'Intermedio',
       lecciones: 5,
       icon: 'document-text-outline',
-      theme: 'theme-amber',
+      color: '#f97316',
+      progress: 90,
+      route: '/redaccion',
     },
     {
+      id: 'compresion',
       titulo: 'Comprensión',
-      descripcion: 'Desarrolla tu capacidad de análisis de textos',
+      descripcion: 'Análisis de textos',
       nivel: 'Avanzado',
       lecciones: 5,
       icon: 'library-outline',
-      theme: 'theme-red',
+      color: '#ef4444',
+      progress: 0,
+      route: '/compresion',
     },
     {
+      id: 'lecciones',
       titulo: 'Lecciones Finales',
-      descripcion: 'Pon a prueba todo lo aprendido',
+      descripcion: 'Pon a prueba lo aprendido',
       nivel: 'Evaluación',
       lecciones: 10,
       icon: 'school',
-      theme: 'theme-indigo',
+      color: '#8b5cf6',
+      progress: 0,
+      route: '/lecciones',
     },
   ];
 
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private menuController: MenuController
   ) {
     addIcons({
-      sparkles,
-      rocket,
-      bookOutline,
-      pencilOutline,
-      documentTextOutline,
-      speedometerOutline,
-      trophyOutline,
-      flashOutline,
-      phonePortraitOutline,
-      documentOutline,
-      personAdd,
-      close,
-      logInOutline,
-      personAddOutline,
-      mailOutline,
-      lockClosedOutline,
-      personOutline,
-      school,
-      menuOutline,
-      arrowForward,
-      arrowForwardOutline,
-      gridOutline,
-      rocketOutline,
-      timeOutline,
-      star,
-      shapesOutline,
-      libraryOutline,
-      closeOutline,
-      chevronDown,
-      logIn,
+      sparkles, rocket, bookOutline, pencilOutline, documentTextOutline,
+      speedometerOutline, trophyOutline, flashOutline, phonePortraitOutline,
+      documentOutline, personAdd, close, logInOutline, personAddOutline,
+      mailOutline, lockClosedOutline, personOutline, school, menuOutline,
+      arrowForward, gridOutline, rocketOutline, timeOutline, star,
+      shapesOutline, libraryOutline, closeOutline, chevronDown, logIn,
+      personCircleOutline, logOutOutline, barChartOutline, checkmarkDoneOutline,
+      searchOutline, homeOutline, settingsOutline,
     });
   }
 
   ngOnInit() {
-    // Verificar si ya está autenticado
-    const isAuth = localStorage.getItem('isAuthenticated') === 'true';
-    if (isAuth) {
-      // Si ya está autenticado, redirigir al dashboard
-      this.router.navigateByUrl('/dashboard');
+    this.checkAuth();
+  }
+
+  checkAuth() {
+    this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    
+    if (this.isAuthenticated) {
+      this.userName = localStorage.getItem('userName') || 'Usuario';
+      this.userEmail = localStorage.getItem('userEmail') || 'usuario@email.com';
+      this.calculateProgress();
     }
+  }
+
+  calculateProgress() {
+    // Calcular progreso general
+    const total = this.modulos.reduce((sum, m) => sum + m.progress, 0);
+    this.overallProgress = Math.round(total / this.modulos.length);
+    
+    // Contar módulos completados
+    this.completedModules = this.modulos.filter(m => m.progress === 100).length;
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+    this.menuController.toggle();
   }
 
   scrollToTop() {
@@ -214,49 +269,35 @@ export class LandingPage implements OnInit {
   }
 
   async handleLogin() {
-    // Validación básica
     if (!this.loginData.email || !this.loginData.password) {
       await this.showToast('Por favor completa todos los campos', 'warning');
       return;
     }
 
-    // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.loginData.email)) {
       await this.showToast('Por favor ingresa un email válido', 'warning');
       return;
     }
 
-    // Simular autenticación
-    console.log('Login:', this.loginData);
-    
-    // Guardar estado de autenticación
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('userEmail', this.loginData.email);
+    localStorage.setItem('userName', this.loginData.email.split('@')[0]);
 
-    // Mostrar mensaje de éxito
-    await this.showToast('¡Bienvenido! Iniciando sesión...', 'success');
-
-    // Redirigir al dashboard
+    await this.showToast('¡Bienvenido!', 'success');
     this.closeAuth();
-    setTimeout(() => {
-      this.router.navigateByUrl('/dashboard');
-    }, 500);
+    
+    // Recargar página para mostrar dashboard
+    this.checkAuth();
   }
 
   async handleRegister() {
-    // Validaciones
-    if (
-      !this.registerData.name ||
-      !this.registerData.email ||
-      !this.registerData.password ||
-      !this.registerData.confirmPassword
-    ) {
+    if (!this.registerData.name || !this.registerData.email || 
+        !this.registerData.password || !this.registerData.confirmPassword) {
       await this.showToast('Por favor completa todos los campos', 'warning');
       return;
     }
 
-    // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.registerData.email)) {
       await this.showToast('Por favor ingresa un email válido', 'warning');
@@ -273,67 +314,59 @@ export class LandingPage implements OnInit {
       return;
     }
 
-    // Simular registro
-    console.log('Register:', this.registerData);
-
-    // Guardar estado de autenticación
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('userName', this.registerData.name);
     localStorage.setItem('userEmail', this.registerData.email);
 
-    // Mostrar mensaje de éxito
-    await this.showToast('¡Cuenta creada! Bienvenido a Piensa 🎉', 'success');
-
-    // Redirigir al dashboard
+    await this.showToast('¡Cuenta creada! Bienvenido 🎉', 'success');
     this.closeAuth();
-    setTimeout(() => {
-      this.router.navigateByUrl('/dashboard');
-    }, 500);
-  }
-
-  async showAuthForModule() {
-    const isAuth = localStorage.getItem('isAuthenticated') === 'true';
     
-    if (isAuth) {
-      // Si ya está autenticado, ir al dashboard
-      this.router.navigateByUrl('/dashboard');
-    } else {
-      // Si no está autenticado, mostrar modal de registro
-      const alert = await this.alertController.create({
-        header: '¡Regístrate para empezar!',
-        message: 'Crea una cuenta gratis para acceder a todos los módulos de aprendizaje',
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-          },
-          {
-            text: 'Registrarme',
-            handler: () => {
-              this.showAuth('register');
-            },
-          },
-        ],
-      });
-
-      await alert.present();
-    }
+    // Recargar página para mostrar dashboard
+    this.checkAuth();
   }
 
-  private async showToast(message: string, color: 'success' | 'warning' | 'danger' = 'success') {
+  async logout() {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    
+    await this.showToast('Sesión cerrada', 'success');
+    this.isAuthenticated = false;
+    this.sidebarOpen = false;
+    this.scrollToTop();
+  }
+
+  goToModule(modulo: any) {
+    if (!this.isAuthenticated) {
+      this.showAuth('register');
+      return;
+    }
+    
+    this.router.navigateByUrl(modulo.route);
+  }
+
+  goToSettings() {
+    // Implementar settings
+    this.showToast('Configuración - Próximamente', 'primary');
+  }
+
+  private async showToast(message: string, color: 'success' | 'warning' | 'danger' | 'primary' = 'success') {
     const toast = await this.toastController.create({
       message,
       duration: 3000,
       position: 'top',
       color,
-      buttons: [
-        {
-          text: '✕',
-          role: 'cancel',
-        },
-      ],
+      buttons: [{ text: '✕', role: 'cancel' }],
     });
-
     await toast.present();
+  }
+
+  get filteredModulos() {
+    if (!this.searchQuery) return this.modulos;
+    
+    return this.modulos.filter(m => 
+      m.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+      m.descripcion.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 }

@@ -5,13 +5,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./landing/landing.page').then((m) => m.LandingPage),
-  },
-  
-  // Dashboard (antes era /home, ahora es más claro)
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
+  },  
   
   // Redirección por compatibilidad
   {
