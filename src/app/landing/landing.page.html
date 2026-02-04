@@ -234,7 +234,7 @@
             <ion-icon name="school"></ion-icon>
           </div>
           <div class="header-text">
-            <h2>🎓 Academia de Lengua</h2>
+            <h2>Academia de la Lengua</h2>
             <p>Panel general de progreso y acceso rápido</p>
           </div>
         </div>
@@ -275,7 +275,7 @@
     </section>
     
     <!-- FEATURES SECTION (CONSERVADA) -->
-    <section class="features-section" id="caracteristicas">
+    <section class="features-section" id="caracteristicas" *ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>¿Por qué elegir Piensa?</h2>
         <p>Todo lo que necesitas para mejorar tu español</p>
@@ -317,7 +317,7 @@
     </section>
     
     <!-- HOW IT WORKS (CONSERVADA) -->
-    <section class="how-it-works-section">
+    <section class="how-it-works-section" *ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>¿Cómo funciona?</h2>
         <p>Comienza tu viaje de aprendizaje en 3 simples pasos</p>
@@ -420,7 +420,7 @@
 </section>
     
     <!-- TESTIMONIALS (CONSERVADA) -->
-    <section class="testimonials-section" id="testimonios">
+    <section class="testimonials-section" id="testimonios"*ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>Lo que dicen nuestros estudiantes</h2>
         <p>Historias reales de estudiantes que mejoraron su español con Piensa</p>
@@ -490,7 +490,7 @@
     </section>
     
     <!-- STATS BANNER (CONSERVADA) -->
-    <section class="stats-banner">
+    <section class="stats-banner" *ngIf="!isAuthenticated">
       <div class="stats-banner-content">
         <div class="stat-box">
           <div class="stat-value">500+</div>
@@ -512,7 +512,7 @@
     </section>
     
     <!-- CTA FINAL (CONSERVADA) -->
-    <section class="cta-section">
+    <section class="cta-section" *ngIf="!isAuthenticated">
       <div class="cta-container">
         <div class="cta-content">
           <h2>¿Listo para empezar?</h2>

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SubmoduloPage } from './submodulo.page';
+import { CompresionSubmoduloPage } from './submodulo.page';
 
 describe('SubmoduloPage', () => {
-  let component: SubmoduloPage;
-  let fixture: ComponentFixture<SubmoduloPage>;
+  let component: CompresionSubmoduloPage;
+  let fixture: ComponentFixture<CompresionSubmoduloPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SubmoduloPage);
+    fixture = TestBed.createComponent(CompresionSubmoduloPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
