@@ -471,7 +471,7 @@ export class CompresionSubmoduloPage implements OnInit, OnDestroy {
   }
 
   irHome() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/');
   }
 
   toggleSolucion(i: number) {

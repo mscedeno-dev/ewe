@@ -213,7 +213,22 @@ export class LandingPage implements OnInit {
 
   ngOnInit() {
     this.checkAuth();
+    this.loadModulesProgress();
   }
+  // AGREGAR ESTE MÉTODO COMPLETO
+loadModulesProgress() {
+  // Leer progreso desde localStorage
+  this.modulos.forEach(modulo => {
+    const progressKey = `progress_${modulo.id}`;
+    const savedProgress = localStorage.getItem(progressKey);
+    if (savedProgress) {
+      modulo.progress = parseInt(savedProgress, 10);
+    }
+  });
+  
+  // Recalcular stats generales
+  this.calculateProgress();
+}
 
   checkAuth() {
     this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';

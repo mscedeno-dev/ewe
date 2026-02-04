@@ -397,7 +397,7 @@ export class GramaticaSubmoduloPage implements OnInit, OnDestroy {
 
   // Header: ir a Home
   irHome() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/');
   }
 
   toggleSolucion(i: number) {
