@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service'; // Asegúrate que la ruta sea correcta
 import {
   IonContent,
   IonButton,
@@ -23,45 +24,18 @@ import {
   AlertController,
   ToastController,
   MenuController,
+  IonSpinner // Agregado para feedback visual
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  sparkles,
-  rocket,
-  bookOutline,
-  pencilOutline,
-  documentTextOutline,
-  speedometerOutline,
-  trophyOutline,
-  flashOutline,
-  phonePortraitOutline,
-  documentOutline,
-  personAdd,
-  close,
-  logInOutline,
-  personAddOutline,
-  mailOutline,
-  lockClosedOutline,
-  personOutline,
-  school,
-  menuOutline,
-  arrowForward,
-  gridOutline,
-  rocketOutline,
-  timeOutline,
-  star,
-  shapesOutline,
-  libraryOutline,
-  closeOutline,
-  chevronDown,
-  logIn,
-  personCircleOutline,
-  logOutOutline,
-  barChartOutline,
-  checkmarkDoneOutline,
-  searchOutline,
-  homeOutline,
-  settingsOutline,
+  sparkles, rocket, bookOutline, pencilOutline, documentTextOutline,
+  speedometerOutline, trophyOutline, flashOutline, phonePortraitOutline,
+  documentOutline, personAdd, close, logInOutline, personAddOutline,
+  mailOutline, lockClosedOutline, personOutline, school, menuOutline,
+  arrowForward, gridOutline, rocketOutline, timeOutline, star,
+  shapesOutline, libraryOutline, closeOutline, chevronDown, logIn,
+  personCircleOutline, logOutOutline, barChartOutline, checkmarkDoneOutline,
+  searchOutline, homeOutline, settingsOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -89,16 +63,18 @@ import {
     IonList,
     IonItem,
     IonLabel,
+    IonSpinner
   ],
 })
 export class LandingPage implements OnInit {
   // Estado de autenticación
   isAuthenticated = false;
-  
+  isLoading = false; // Para mostrar spinner en los botones
+
   // Datos del usuario
   userName = 'Usuario';
-  userEmail = 'usuario@email.com';
-  
+  userEmail = '';
+
   // Modal de autenticación
   showAuthModal = false;
   authMode: 'login' | 'register' = 'login';
@@ -196,6 +172,7 @@ export class LandingPage implements OnInit {
   constructor(
     private router: Router,
     private alertController: AlertController,
+    private authService: AuthService, // Inyectamos el servicio real
     private toastController: ToastController,
     private menuController: MenuController
   ) {
@@ -212,40 +189,39 @@ export class LandingPage implements OnInit {
   }
 
   ngOnInit() {
-    this.checkAuth();
+    // 1. Escuchar el estado de Firebase en tiempo real
+    this.authService.authState$.subscribe(user => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.userEmail = user.email || '';
+        // Firebase Auth básico no guarda el nombre al registrarse inmediatamente,
+        // usamos el nombre del formulario si está disponible, o la parte del correo.
+        this.userName = user.displayName || this.userEmail.split('@')[0];
+        this.calculateProgress();
+      } else {
+        this.isAuthenticated = false;
+        this.userName = 'Invitado';
+      }
+    });
+
     this.loadModulesProgress();
   }
-  // AGREGAR ESTE MÉTODO COMPLETO
-loadModulesProgress() {
-  // Leer progreso desde localStorage
-  this.modulos.forEach(modulo => {
-    const progressKey = `progress_${modulo.id}`;
-    const savedProgress = localStorage.getItem(progressKey);
-    if (savedProgress) {
-      modulo.progress = parseInt(savedProgress, 10);
-    }
-  });
-  
-  // Recalcular stats generales
-  this.calculateProgress();
-}
 
-  checkAuth() {
-    this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    
-    if (this.isAuthenticated) {
-      this.userName = localStorage.getItem('userName') || 'Usuario';
-      this.userEmail = localStorage.getItem('userEmail') || 'usuario@email.com';
-      this.calculateProgress();
-    }
+  loadModulesProgress() {
+    // Mantenemos el progreso en localStorage por ahora (esto podría ir a Firestore luego)
+    this.modulos.forEach(modulo => {
+      const progressKey = `progress_${modulo.id}`;
+      const savedProgress = localStorage.getItem(progressKey);
+      if (savedProgress) {
+        modulo.progress = parseInt(savedProgress, 10);
+      }
+    });
+    this.calculateProgress();
   }
 
   calculateProgress() {
-    // Calcular progreso general
     const total = this.modulos.reduce((sum, m) => sum + m.progress, 0);
     this.overallProgress = Math.round(total / this.modulos.length);
-    
-    // Contar módulos completados
     this.completedModules = this.modulos.filter(m => m.progress === 100).length;
   }
 
@@ -281,41 +257,38 @@ loadModulesProgress() {
   resetForms() {
     this.loginData = { email: '', password: '' };
     this.registerData = { name: '', email: '', password: '', confirmPassword: '' };
+    this.isLoading = false;
   }
 
+  // --- LÓGICA DE LOGIN CON FIREBASE ---
   async handleLogin() {
     if (!this.loginData.email || !this.loginData.password) {
       await this.showToast('Por favor completa todos los campos', 'warning');
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.loginData.email)) {
-      await this.showToast('Por favor ingresa un email válido', 'warning');
-      return;
+    this.isLoading = true;
+
+    try {
+      // Llamada real a Firebase
+      await this.authService.login(this.loginData.email, this.loginData.password);
+      
+      await this.showToast('¡Bienvenido de nuevo!', 'success');
+      this.closeAuth();
+      // No hace falta recargar, el observable en ngOnInit actualizará la vista
+    } catch (error: any) {
+      console.error(error);
+      const msg = this.mapFirebaseError(error.code);
+      await this.showToast(msg, 'danger');
+    } finally {
+      this.isLoading = false;
     }
-
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userEmail', this.loginData.email);
-    localStorage.setItem('userName', this.loginData.email.split('@')[0]);
-
-    await this.showToast('¡Bienvenido!', 'success');
-    this.closeAuth();
-    
-    // Recargar página para mostrar dashboard
-    this.checkAuth();
   }
 
+  // --- LÓGICA DE REGISTRO CON FIREBASE ---
   async handleRegister() {
-    if (!this.registerData.name || !this.registerData.email || 
-        !this.registerData.password || !this.registerData.confirmPassword) {
-      await this.showToast('Por favor completa todos los campos', 'warning');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.registerData.email)) {
-      await this.showToast('Por favor ingresa un email válido', 'warning');
+    if (!this.registerData.email || !this.registerData.password || !this.registerData.confirmPassword) {
+      await this.showToast('Completa todos los campos obligatorios', 'warning');
       return;
     }
 
@@ -329,39 +302,47 @@ loadModulesProgress() {
       return;
     }
 
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userName', this.registerData.name);
-    localStorage.setItem('userEmail', this.registerData.email);
+    this.isLoading = true;
 
-    await this.showToast('¡Cuenta creada! Bienvenido 🎉', 'success');
-    this.closeAuth();
-    
-    // Recargar página para mostrar dashboard
-    this.checkAuth();
+    try {
+      // Llamada real a Firebase
+      await this.authService.register(this.registerData.email, this.registerData.password);
+      
+      // Opcional: Aquí podrías llamar a updateProfile para guardar el registerData.name
+      
+      await this.showToast('¡Cuenta creada con éxito!', 'success');
+      this.closeAuth();
+    } catch (error: any) {
+      console.error(error);
+      const msg = this.mapFirebaseError(error.code);
+      await this.showToast(msg, 'danger');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
+  // --- LÓGICA DE LOGOUT CON FIREBASE ---
   async logout() {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    
-    await this.showToast('Sesión cerrada', 'success');
-    this.isAuthenticated = false;
-    this.sidebarOpen = false;
-    this.scrollToTop();
+    try {
+      await this.authService.logout();
+      await this.showToast('Sesión cerrada', 'primary');
+      this.sidebarOpen = false;
+      this.scrollToTop();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   goToModule(modulo: any) {
     if (!this.isAuthenticated) {
-      this.showAuth('register');
+      this.showToast('Debes iniciar sesión para acceder al contenido', 'warning');
+      this.showAuth('login'); // Redirige al login en vez de register
       return;
     }
-    
     this.router.navigateByUrl(modulo.route);
   }
 
   goToSettings() {
-    // Implementar settings
     this.showToast('Configuración - Próximamente', 'primary');
   }
 
@@ -376,9 +357,26 @@ loadModulesProgress() {
     await toast.present();
   }
 
+  // Traductor de errores de Firebase
+  private mapFirebaseError(code: string): string {
+    switch (code) {
+      case 'auth/email-already-in-use':
+        return 'El correo ya está registrado.';
+      case 'auth/invalid-email':
+        return 'El correo no es válido.';
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return 'Correo o contraseña incorrectos.';
+      case 'auth/weak-password':
+        return 'La contraseña es muy débil.';
+      default:
+        return 'Ocurrió un error inesperado.';
+    }
+  }
+
   get filteredModulos() {
     if (!this.searchQuery) return this.modulos;
-    
     return this.modulos.filter(m => 
       m.titulo.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
       m.descripcion.toLowerCase().includes(this.searchQuery.toLowerCase())

@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true" class="landing-content">
   
-  <!-- SIDEBAR (solo cuando está autenticado) -->
   <ion-menu contentId="main-content" type="overlay" *ngIf="isAuthenticated">
     <ion-content class="sidebar-content">
       <div class="sidebar-header">
@@ -37,11 +36,9 @@
 
   <div id="main-content">
   
-  <!-- NAVBAR -->
   <nav class="landing-navbar">
     <div class="navbar-container">
       
-      <!-- Modo Guest -->
       <ng-container *ngIf="!isAuthenticated">
         <div class="navbar-brand">
           <ion-icon name="school"></ion-icon>
@@ -69,7 +66,6 @@
         </ion-button>
       </ng-container>
       
-      <!-- Modo Auth -->
       <ng-container *ngIf="isAuthenticated">
         <ion-menu-button class="menu-button"></ion-menu-button>
         
@@ -101,7 +97,6 @@
       
     </div>
     
-    <!-- Mobile Menu (solo guest) -->
     <div class="mobile-menu" [class.active]="mobileMenuOpen" *ngIf="!isAuthenticated">
       <a href="#inicio" class="mobile-link" (click)="toggleMobileMenu()">Inicio</a>
       <a href="#caracteristicas" class="mobile-link" (click)="toggleMobileMenu()">Características</a>
@@ -120,13 +115,10 @@
   
   <div class="landing-wrapper">
     
-    <!-- HERO SECTION -->
     <section class="hero-section" id="inicio">
       
-      <!-- Modo Guest: Landing original completo -->
       <div *ngIf="!isAuthenticated" class="hero-container">
         
-        <!-- Left Side - Content -->
         <div class="hero-left">
           <div class="hero-badge">
             <ion-icon name="sparkles"></ion-icon>
@@ -181,7 +173,6 @@
           </div>
         </div>
         
-        <!-- Right Side - Visual -->
         <div class="hero-right">
           <div class="hero-card-stack">
             <div class="floating-card card-1">
@@ -227,7 +218,6 @@
         
       </div>
       
-      <!-- Modo Auth: Dashboard -->
       <div *ngIf="isAuthenticated" class="dashboard-view">
         <div class="dashboard-header">
           <div class="header-icon">
@@ -274,7 +264,6 @@
       
     </section>
     
-    <!-- FEATURES SECTION (CONSERVADA) -->
     <section class="features-section" id="caracteristicas" *ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>¿Por qué elegir Piensa?</h2>
@@ -316,7 +305,6 @@
       </div>
     </section>
     
-    <!-- HOW IT WORKS (CONSERVADA) -->
     <section class="how-it-works-section" *ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>¿Cómo funciona?</h2>
@@ -361,66 +349,53 @@
       </div>
     </section>
     
-    <!-- MODULES SECTION (CON progreso condicional) -->
-   <!-- ==========================================
-     MÓDULOS - HTML DISEÑO VERCEL
-     Reemplazar en landing.page.html
-     Buscar: <section class="modules-section"
-========================================== -->
-
-<section class="modules-section" id="modulos">
-  <div class="section-header">
-    <h2>Módulos destacados</h2>
-    <p>Explora nuestros 6 módulos diseñados para cubrir todos los aspectos del español</p>
-  </div>
-  
-  <div class="modules-grid">
-    <div class="module-card" *ngFor="let modulo of modulos" (click)="goToModule(modulo)" [style.--module-color]="modulo.color">
-      
-      <!-- Header con ícono y nivel -->
-      <div class="module-icon">
-        <ion-icon [name]="modulo.icon"></ion-icon>
-        <span class="level">{{ modulo.nivel }}</span>
+    <section class="modules-section" id="modulos">
+      <div class="section-header">
+        <h2>Módulos destacados</h2>
+        <p>Explora nuestros 6 módulos diseñados para cubrir todos los aspectos del español</p>
       </div>
       
-      <!-- Contenido -->
-      <div class="module-content">
-        <h3>{{ modulo.titulo }}</h3>
-        <p>{{ modulo.descripcion }}</p>
-        
-        <!-- Meta info -->
-        <div class="module-meta">
-          <div class="meta-item">
-            <ion-icon name="document-text-outline"></ion-icon>
-            <span>{{ modulo.lecciones }} lecciones</span>
+      <div class="modules-grid">
+        <div class="module-card" *ngFor="let modulo of modulos" (click)="goToModule(modulo)" [style.--module-color]="modulo.color">
+          
+          <div class="module-icon">
+            <ion-icon [name]="modulo.icon"></ion-icon>
+            <span class="level">{{ modulo.nivel }}</span>
           </div>
-          <div class="meta-item">
-            <ion-icon name="time-outline"></ion-icon>
-            <span>2-3 horas</span>
+          
+          <div class="module-content">
+            <h3>{{ modulo.titulo }}</h3>
+            <p>{{ modulo.descripcion }}</p>
+            
+            <div class="module-meta">
+              <div class="meta-item">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <span>{{ modulo.lecciones }} lecciones</span>
+              </div>
+              <div class="meta-item">
+                <ion-icon name="time-outline"></ion-icon>
+                <span>2-3 horas</span>
+              </div>
+            </div>
+            
+            <div *ngIf="isAuthenticated" class="module-progress-bar">
+              <div class="progress-track">
+                <div class="progress-fill" [style.width.%]="modulo.progress"></div>
+              </div>
+              <span class="progress-text">{{ modulo.progress }}%</span>
+            </div>
+            
+            <div class="module-cta">
+              <span>Ver más</span>
+              <ion-icon name="arrow-forward"></ion-icon>
+            </div>
           </div>
-        </div>
-        
-        <!-- Progress bar (solo si está autenticado) -->
-        <div *ngIf="isAuthenticated" class="module-progress-bar">
-          <div class="progress-track">
-            <div class="progress-fill" [style.width.%]="modulo.progress"></div>
-          </div>
-          <span class="progress-text">{{ modulo.progress }}%</span>
-        </div>
-        
-        <!-- CTA -->
-        <div class="module-cta">
-          <span>Ver más</span>
-          <ion-icon name="arrow-forward"></ion-icon>
+          
         </div>
       </div>
-      
-    </div>
-  </div>
-</section>
+    </section>
     
-    <!-- TESTIMONIALS (CONSERVADA) -->
-    <section class="testimonials-section" id="testimonios"*ngIf="!isAuthenticated">
+    <section class="testimonials-section" id="testimonios" *ngIf="!isAuthenticated">
       <div class="section-header">
         <h2>Lo que dicen nuestros estudiantes</h2>
         <p>Historias reales de estudiantes que mejoraron su español con Piensa</p>
@@ -489,7 +464,6 @@
       </div>
     </section>
     
-    <!-- STATS BANNER (CONSERVADA) -->
     <section class="stats-banner" *ngIf="!isAuthenticated">
       <div class="stats-banner-content">
         <div class="stat-box">
@@ -511,7 +485,6 @@
       </div>
     </section>
     
-    <!-- CTA FINAL (CONSERVADA) -->
     <section class="cta-section" *ngIf="!isAuthenticated">
       <div class="cta-container">
         <div class="cta-content">
@@ -533,7 +506,6 @@
       </div>
     </section>
     
-    <!-- FOOTER (CONSERVADO) -->
     <footer class="landing-footer">
       <div class="footer-container">
         <div class="footer-brand">
@@ -575,10 +547,7 @@
     
   </div>
   
-  </div> <!-- Fin main-content -->
-  
-  <!-- AUTH MODAL (CON LABELS VISIBLES) -->
-  <ion-modal [isOpen]="showAuthModal" (didDismiss)="closeAuth()">
+  </div> <ion-modal [isOpen]="showAuthModal" (didDismiss)="closeAuth()">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -594,7 +563,6 @@
       <ion-content class="auth-modal-content">
         <div class="auth-form">
           
-          <!-- LOGIN FORM -->
           <div *ngIf="authMode === 'login'" class="form-container">
             <div class="form-header">
               <ion-icon name="log-in-outline"></ion-icon>
@@ -630,8 +598,9 @@
               </ion-input>
             </div>
             
-            <ion-button expand="block" size="large" (click)="handleLogin()" class="submit-btn">
-              Iniciar Sesión
+            <ion-button expand="block" size="large" (click)="handleLogin()" class="submit-btn" [disabled]="isLoading">
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+              <span *ngIf="!isLoading">Iniciar Sesión</span>
             </ion-button>
             
             <div class="form-footer">
@@ -639,7 +608,6 @@
             </div>
           </div>
           
-          <!-- REGISTER FORM -->
           <div *ngIf="authMode === 'register'" class="form-container">
             <div class="form-header">
               <ion-icon name="person-add-outline"></ion-icon>
@@ -703,8 +671,9 @@
               </ion-input>
             </div>
             
-            <ion-button expand="block" size="large" (click)="handleRegister()" class="submit-btn">
-              Crear Cuenta
+            <ion-button expand="block" size="large" (click)="handleRegister()" class="submit-btn" [disabled]="isLoading">
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+              <span *ngIf="!isLoading">Crear Cuenta</span>
             </ion-button>
             
             <div class="form-footer">
