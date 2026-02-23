@@ -284,7 +284,7 @@
                        [class.incorrect]="submitted && answers[qi] === oi && oi !== q.answerIndex"
                        (click)="!submitted && selectAnswer(qi, oi)">
                     <div class="option-indicator">
-                     
+                      <span *ngIf="!submitted">{{ String.fromCharCode(65 + oi) }}</span>
                       <ion-icon *ngIf="submitted && oi === q.answerIndex" name="checkmark-circle"></ion-icon>
                       <ion-icon *ngIf="submitted && answers[qi] === oi && oi !== q.answerIndex" name="close-circle"></ion-icon>
                     </div>
@@ -320,9 +320,12 @@
               <ion-button 
                 *ngIf="!submitted"
                 expand="block"
-                (click)="submitQuiz()">
-                <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+                color="primary"
+                (click)="submitQuiz()"
+                >
+                <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
                 Enviar respuestas
+              </ion-button>
 
               <ion-button 
                 *ngIf="submitted"
@@ -332,10 +335,11 @@
                 <ion-icon name="refresh-outline" slot="start"></ion-icon>
                 Reintentar
               </ion-button>
-            
-          
+            </div>
+          </div>
+        </div>
 
-      
+      </div>
 
       <!-- Navegación entre submódulos -->
       <div class="bottom-navigation">
@@ -345,13 +349,20 @@
                *ngFor="let subId of getAllIds()"
                [class.current]="subId === id"
                [class.completed]="isCompleted(subId)"
-              ></div>
+               (click)="subId !== id && irA(subId)">
             <div class="nav-card-icon">
+              <ion-icon [name]="getIconForId(subId)"></ion-icon>
             </div>
             <div class="nav-card-content">
-              <span class="nav-card-badge" *ngIf="isCompleted">Completado</span>
-              <span class="nav-card-badge current" *ngIf="id">Actual</span>
+              <h4>{{ getTitleForId(subId) }}</h4>
+              <span class="nav-card-badge" *ngIf="isCompleted(subId)">Completado</span>
+              <span class="nav-card-badge current" *ngIf="subId === id">Actual</span>
             </div>
           </div>
         </div>
+      </div>
 
+    </div>
+
+  </div>
+</ion-content>
