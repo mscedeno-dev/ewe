@@ -20,17 +20,27 @@ import { addIcons } from 'ionicons';
 import {
   bookOutline,
   checkboxOutline,
+  checkmarkCircle,
   checkmarkDoneOutline,
+  checkmarkOutline,
+  closeCircle,
   createOutline,
   documentTextOutline,
+  eyeOutline,
   helpCircleOutline,
   homeOutline,
+  informationCircleOutline,
+  arrowForwardCircleOutline,
+  menuOutline,
+  pencilOutline,
+  libraryOutline,
+  schoolOutline,
+  shapesOutline,
   refreshOutline,
   ribbonOutline,
   sparklesOutline,
   thumbsUpOutline,
   textOutline,
-
   alertCircleOutline,
   colorWandOutline,
   languageOutline,
@@ -116,7 +126,7 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
         q: '¿Cuál palabra es esdrújula y debe llevar tilde?',
         options: ['rapido', 'cafe', 'reloj', 'papel'],
         answerIndex: 0,
-        explain: '“rápido” es esdrújula y siempre lleva tilde.',
+        explain: '"rápido" es esdrújula y siempre lleva tilde.',
       },
       {
         q: 'Una palabra aguda lleva tilde si termina en…',
@@ -131,7 +141,7 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
     id: 'bV',
     titulo: 'Uso de B y V',
     descripcion: 'Diferencia palabras con b y v mediante reglas y patrones frecuentes.',
-    icon: 'spellcheck-outline',
+    icon: 'text-outline',
     color: '#6366f1',
     teoria: [
       'B y V representan sonidos similares en la mayoría de variantes del español, por eso se confunden.',
@@ -139,15 +149,15 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
     ],
     claves: [
       'Se escribe B: después de m (también, cambio).',
-      'Se escribe B en -aba/-abas/-ábamos (cantaba, jugábamos) excepto “iba”.',
-      'Se escribe V: en adjetivos terminados en -ivo/-iva (activo, creativa), con excepciones: “árabe”, “esclavo”.',
-      'Se escribe V: en palabras con prefijos vice-, villa-, eva- (vicepresidente, Villavicencio, evaluar).',
+      'Se escribe B en -aba/-abas/-ábamos (cantaba, jugábamos) excepto "iba".',
+      'Se escribe V: en adjetivos terminados en -ivo/-iva (activo, creativa).',
+      'Se escribe V: con prefijos vice-, villa-, eva- (vicepresidente, evaluar).',
     ],
     ejemplos: [
       {
         titulo: 'Patrones frecuentes',
         items: [
-          'B: también, cambio, enviar → (ojo: enviar lleva v).',
+          'B: también, cambio.',
           'V: vivir, volver, ventana, suave.',
         ],
       },
@@ -173,13 +183,13 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
         q: '¿Cuál palabra está escrita correctamente?',
         options: ['tubieron', 'estubimos', 'estuvimos', 'tuvoimos'],
         answerIndex: 2,
-        explain: '“estuvimos” va con v (verbo estar).',
+        explain: '"estuvimos" va con v (verbo estar).',
       },
       {
-        q: 'La terminación “-ábamos” se escribe con…',
+        q: 'La terminación "-ábamos" se escribe con…',
         options: ['v', 'b', 'h', 'j'],
         answerIndex: 1,
-        explain: '“-ábamos” va con B: cantábamos, jugábamos.',
+        explain: '"-ábamos" va con B: cantábamos, jugábamos.',
       },
     ],
   },
@@ -188,16 +198,16 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
     id: 'h',
     titulo: 'Uso de H',
     descripcion: 'Aprende cuándo se escribe h y cómo evitar errores comunes.',
-    icon: 'text-outline',
+    icon: 'book-outline',
     color: '#f59e0b',
     teoria: [
       'La H es muda, pero se conserva por etimología y reglas ortográficas.',
       'Muchas palabras cambian totalmente de significado si se omite: hecho / echo.',
     ],
     claves: [
-      'Llevan H: palabras con “hie-” (hielo, hierro), “hue-” (huevo, hueso), “hum-” (humano, humedad).',
+      'Llevan H: palabras con "hie-" (hielo, hierro), "hue-" (huevo, hueso), "hum-" (humano, humedad).',
       'Llevan H: formas del verbo haber (he, has, ha, hemos, habían).',
-      'No llevan H: “a ver” (mirar) ≠ “haber” (verbo).',
+      'No llevan H: "a ver" (mirar) ≠ "haber" (verbo).',
       'Diferencia clave: hecho (realizado) vs echo (tirar).',
     ],
     ejemplos: [
@@ -225,13 +235,13 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
         q: '¿Cuál oración es correcta?',
         options: ['A ver terminado', 'He terminado', 'E terminado', 'Eh terminado'],
         answerIndex: 1,
-        explain: 'La forma correcta del verbo haber es “He terminado”.',
+        explain: 'La forma correcta del verbo haber es "He terminado".',
       },
       {
         q: 'Selecciona el uso correcto:',
         options: ['Echo la tarea (realizado)', 'Hecho la basura (tirar)', 'He hecho la tarea', 'Aver si vienes'],
         answerIndex: 2,
-        explain: '“He hecho” = haber + participio. “Echo” es del verbo echar.',
+        explain: '"He hecho" = haber + participio. "Echo" es del verbo echar.',
       },
     ],
   },
@@ -243,14 +253,14 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
     icon: 'color-wand-outline',
     color: '#ef4444',
     teoria: [
-      'G puede sonar suave (ge/gi = como “j”) o fuerte (ga/go/gu).',
+      'G puede sonar suave (ge/gi = como "j") o fuerte (ga/go/gu).',
       'J mantiene el sonido fuerte (ja/jo/ju) y también en je/ji.',
     ],
     claves: [
-      'Se escribe G: “ge/gi” (gente, girar) y “gue/gui” (guerra, guitarra) con u muda.',
+      'Se escribe G: "ge/gi" (gente, girar) y "gue/gui" (guerra, guitarra) con u muda.',
       'Se escribe J: en palabras terminadas en -aje (viaje, paisaje) y -jería (relojería).',
-      'Excepción típica: “tejido” va con j (tejer).',
-      'Ojo: “gerencia”, “gestión” van con g.',
+      'Excepción típica: "tejido" va con j (tejer).',
+      'Ojo: "gerencia", "gestión" van con g.',
     ],
     ejemplos: [
       { titulo: 'Con G', items: ['gente, girar, guitarra, guerra'] },
@@ -270,13 +280,13 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
         q: '¿Cuál palabra debe escribirse con J?',
         options: ['gente', 'gestión', 'viaje', 'girar'],
         answerIndex: 2,
-        explain: '“viaje” termina en -aje, se escribe con j.',
+        explain: '"viaje" termina en -aje, se escribe con j.',
       },
       {
-        q: '“guerra” se escribe con “gue” porque…',
+        q: '"guerra" se escribe con "gue" porque…',
         options: ['la u suena', 'la u es muda y mantiene el sonido g fuerte', 'es excepción sin regla', 'va con j en realidad'],
         answerIndex: 1,
-        explain: 'En “gue” la u es muda y permite mantener el sonido fuerte de la g.',
+        explain: 'En "gue" la u es muda y permite mantener el sonido fuerte de la g.',
       },
     ],
   },
@@ -289,12 +299,12 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
     color: '#8b5cf6',
     teoria: [
       'Las mayúsculas se usan por norma en inicios de texto, después de punto y en nombres propios.',
-      'No se deben usar “por estética” en textos formales; se aplican según regla.',
+      'No se deben usar "por estética" en textos formales; se aplican según regla.',
     ],
     claves: [
-      'Se escribe con mayúscula: inicio de oración, nombres propios (María, Ecuador), instituciones (Universidad de Cuenca).',
+      'Se escribe con mayúscula: inicio de oración, nombres propios (María, Ecuador), instituciones.',
       'Días y meses van en minúscula: lunes, enero (salvo inicio de oración).',
-      'Títulos de obras: solo mayúscula inicial si no son nombres propios (Cien años de soledad).',
+      'Títulos de obras: solo mayúscula inicial si no son nombres propios.',
       'Siglas: ONU, UCuenca (según convención).',
     ],
     ejemplos: [
@@ -326,7 +336,7 @@ const ORTOGRAFIA: Record<OrtografiaId, SubmoduloContent> = {
         q: '¿Qué se escribe siempre con mayúscula?',
         options: ['lunes', 'enero', 'Ecuador', 'primavera'],
         answerIndex: 2,
-        explain: '“Ecuador” es nombre propio.',
+        explain: '"Ecuador" es nombre propio.',
       },
     ],
   },
@@ -367,6 +377,8 @@ export class OrtografiaSubmoduloPage implements OnInit, OnDestroy {
   submitted = false;
 
   moduleProgress = 0;
+  sidebarOpen = false;
+  Math = Math;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     addIcons({
@@ -375,6 +387,9 @@ export class OrtografiaSubmoduloPage implements OnInit, OnDestroy {
       createOutline,
       helpCircleOutline,
       checkmarkDoneOutline,
+      checkmarkCircle,
+      checkmarkOutline,
+      closeCircle,
       checkboxOutline,
       refreshOutline,
       thumbsUpOutline,
@@ -382,10 +397,17 @@ export class OrtografiaSubmoduloPage implements OnInit, OnDestroy {
       sparklesOutline,
       homeOutline,
       textOutline,
-      
       alertCircleOutline,
       colorWandOutline,
       languageOutline,
+      menuOutline,
+      pencilOutline,
+      libraryOutline,
+      schoolOutline,
+      shapesOutline,
+      eyeOutline,
+      informationCircleOutline,
+      arrowForwardCircleOutline,
     });
   }
 
@@ -451,18 +473,26 @@ export class OrtografiaSubmoduloPage implements OnInit, OnDestroy {
   irA(id: OrtografiaId) {
     this.router.navigate(['/ortografia', id]);
   }
-  // Métodos helper para evitar errores de TypeScript
-  getQuizLength(): number {
-    return this.data?.quiz?.length || 0;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  isCompleted(subId: string): boolean {
+    return localStorage.getItem(`done_ortografia_${subId}`) === '1';
+  }
+
+  getAllIds(): string[] {
+    return ['acentuacion', 'bV', 'h', 'gJ', 'mayusculas'];
   }
 
   getScorePercentage(): number {
-    const total = this.getQuizLength();
+    const total = this.data?.quiz?.length || 0;
     if (total === 0) return 0;
     return Math.round((this.score / total) * 100);
   }
 
-  hasQuiz(): boolean {
-    return this.data?.quiz && this.data.quiz.length > 0;
+  goToModule(moduleName: string) {
+    this.router.navigate([`/${moduleName}`]);
   }
 }

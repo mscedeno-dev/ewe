@@ -2,37 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonLabel,
-  IonProgressBar,
-  IonRow,
-  IonTitle,
-  IonToolbar,
+  IonBackButton, IonButton, IonButtons, IonCol, IonContent,
+  IonGrid, IonHeader, IonIcon, IonLabel, IonProgressBar,
+  IonRow, IonTitle, IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  bookOutline,
-  checkboxOutline,
-  checkmarkDoneOutline,
-  createOutline,
-  documentTextOutline,
-  helpCircleOutline,
-  homeOutline,
-  refreshOutline,
-  ribbonOutline,
-  sparklesOutline,
-  thumbsUpOutline,
+  bookOutline, checkboxOutline, checkmarkCircle, checkmarkDoneOutline,
+  checkmarkOutline, closeCircle, createOutline, documentTextOutline,
+  eyeOutline, helpCircleOutline, homeOutline, informationCircleOutline,
+  arrowForwardCircleOutline, menuOutline, pencilOutline, libraryOutline,
+  schoolOutline, shapesOutline, refreshOutline, ribbonOutline,
+  sparklesOutline, thumbsUpOutline,
 } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 
-/** IDs de Puntuación (los que van en la URL /puntuacion/:id) */
 type PuntuacionId = 'punto' | 'coma' | 'puntoYComa' | 'dosPuntos' | 'signos';
 
 interface QuizQuestion {
@@ -48,17 +32,14 @@ interface SubmoduloContent {
   descripcion: string;
   icon: string;
   color: string;
-
   teoria: string[];
   claves: string[];
   ejemplos: { titulo: string; items: string[] }[];
-
   actividad: {
     objetivo: string;
     instrucciones: string;
     frases: { texto: string; solucion: string }[];
   };
-
   quiz: QuizQuestion[];
 }
 
@@ -84,9 +65,9 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
       {
         titulo: 'Ejemplos',
         items: [
-          'Punto y seguido: “Estudio hoy. Mañana repaso.”',
-          'Punto y aparte: “Terminó la clase. (nuevo párrafo) Empezó la práctica.”',
-          'Punto final: “Ese fue el resumen.”',
+          'Punto y seguido: "Estudio hoy. Mañana repaso."',
+          'Punto y aparte: "Terminó la clase. (nuevo párrafo) Empezó la práctica."',
+          'Punto final: "Ese fue el resumen."',
         ],
       },
     ],
@@ -126,10 +107,10 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
       'Se usa para separar elementos, aclaraciones o llamar a alguien (vocativo).',
     ],
     claves: [
-      'Enumeración: “Compré pan, leche y queso.”',
-      'Vocativo: “María, ven acá.”',
-      'Aclaración: “Juan, mi amigo, llegó tarde.”',
-      'Antes de “pero”: “Quise ir, pero no pude.”',
+      'Enumeración: "Compré pan, leche y queso."',
+      'Vocativo: "María, ven acá."',
+      'Aclaración: "Juan, mi amigo, llegó tarde."',
+      'Antes de "pero": "Quise ir, pero no pude."',
     ],
     ejemplos: [
       { titulo: 'Enumeración', items: ['Traje cuadernos, lápices, borrador y regla.'] },
@@ -150,13 +131,13 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
         q: '¿Cuál opción usa coma vocativa correctamente?',
         options: ['María ven acá', 'María, ven acá', 'María ven, acá', 'María ven acá,'],
         answerIndex: 1,
-        explain: 'La coma vocativa separa el nombre de la acción: “María, ven acá”.',
+        explain: 'La coma vocativa separa el nombre de la acción: "María, ven acá".',
       },
       {
-        q: 'La coma en “Juan, mi amigo, llegó” indica…',
+        q: 'La coma en "Juan, mi amigo, llegó" indica…',
         options: ['enumeración', 'vocativo', 'aclaración', 'punto y aparte'],
         answerIndex: 2,
-        explain: '“mi amigo” es una aclaración entre comas.',
+        explain: '"mi amigo" es una aclaración entre comas.',
       },
     ],
   },
@@ -172,9 +153,9 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
       'Se usa cuando las ideas están relacionadas, pero son más largas o complejas.',
     ],
     claves: [
-      'Separa oraciones largas: “Estudié toda la tarde; aun así me faltó practicar.”',
-      'En enumeraciones complejas: “Invité a Ana, mi prima; Carlos, mi vecino; y Luis, mi amigo.”',
-      'Suele aparecer antes de conectores: “sin embargo”, “por tanto”.',
+      'Separa oraciones largas: "Estudié toda la tarde; aun así me faltó practicar."',
+      'En enumeraciones complejas: "Invité a Ana, mi prima; Carlos, mi vecino; y Luis, mi amigo."',
+      'Suele aparecer antes de conectores: "sin embargo", "por tanto".',
     ],
     ejemplos: [
       { titulo: 'Oraciones relacionadas', items: ['Quería viajar; no tenía dinero.'] },
@@ -216,21 +197,21 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
       'No se usa mayúscula después de dos puntos salvo caso de cita o nombre propio.',
     ],
     claves: [
-      'Enumeración: “Necesitas: cuaderno, lápiz y borrador.”',
-      'Explicación: “Solo pido esto: responsabilidad.”',
-      'Cita: “El profe dijo: “Estudien para mañana”.”',
+      'Enumeración: "Necesitas: cuaderno, lápiz y borrador."',
+      'Explicación: "Solo pido esto: responsabilidad."',
+      'Cita: "El profe dijo: \'Estudien para mañana\'."',
     ],
     ejemplos: [
       { titulo: 'Enumeración', items: ['Traje: pan, leche, queso.'] },
       { titulo: 'Explicación', items: ['Tenía un objetivo: aprobar el examen.'] },
     ],
     actividad: {
-      objetivo: 'Usar dos puntos como “anuncio”.',
+      objetivo: 'Usar dos puntos como "anuncio".',
       instrucciones: 'Revisa cómo introducen información.',
       frases: [
         { texto: 'Necesitas traer cuaderno lápiz y borrador', solucion: 'Necesitas traer: cuaderno, lápiz y borrador.' },
         { texto: 'Solo hay una regla estudiar', solucion: 'Solo hay una regla: estudiar.' },
-        { texto: 'El profesor dijo estudien más', solucion: 'El profesor dijo: “Estudien más”.' },
+        { texto: 'El profesor dijo estudien más', solucion: 'El profesor dijo: "Estudien más".' },
       ],
     },
     quiz: [
@@ -244,7 +225,7 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
         q: '¿Cuál es un uso correcto?',
         options: ['Traje: pan y leche', 'Traje pan: y leche', 'Traje pan y: leche', 'Traje pan y leche:'],
         answerIndex: 0,
-        explain: '“Traje: pan y leche” está bien si introduce enumeración.',
+        explain: '"Traje: pan y leche" está bien si introduce enumeración.',
       },
     ],
   },
@@ -260,9 +241,9 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
       'Se colocan solo en el fragmento interrogativo/exclamativo si es parte de una oración más larga.',
     ],
     claves: [
-      'Correcto: “¿Cómo estás?” / “¡Qué bien!”',
-      'Dentro de una oración: “Si vienes, ¿me avisas?”',
-      'No se duplican: evita “¿¿??” en textos formales.',
+      'Correcto: "¿Cómo estás?" / "¡Qué bien!"',
+      'Dentro de una oración: "Si vienes, ¿me avisas?"',
+      'No se duplican: evita "¿¿??" en textos formales.',
     ],
     ejemplos: [
       { titulo: 'Preguntas', items: ['¿Qué hora es?', '¿Dónde queda la U?'] },
@@ -288,7 +269,7 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
         q: '¿Cuál opción está correcta?',
         options: ['Como estas?', '¿Como estas?', '¿Cómo estás?', '¿Cómo estas'],
         answerIndex: 2,
-        explain: 'Debe llevar apertura/cierre y tildes: “¿Cómo estás?”',
+        explain: 'Debe llevar apertura/cierre y tildes: "¿Cómo estás?"',
       },
     ],
   },
@@ -300,21 +281,9 @@ const PUNTUACION: Record<PuntuacionId, SubmoduloContent> = {
   templateUrl: './submodulo.page.html',
   styleUrls: ['./submodulo.page.scss'],
   imports: [
-    CommonModule,
-    RouterModule,
-    IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
-    IonButton,
-    IonIcon,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonLabel,
-    IonProgressBar,
+    CommonModule, RouterModule, IonContent, IonHeader, IonToolbar,
+    IonTitle, IonButtons, IonBackButton, IonButton, IonIcon,
+    IonGrid, IonRow, IonCol, IonLabel, IonProgressBar,
   ],
 })
 export class PuntuacionSubmoduloPage implements OnInit, OnDestroy {
@@ -329,20 +298,17 @@ export class PuntuacionSubmoduloPage implements OnInit, OnDestroy {
   submitted = false;
 
   moduleProgress = 0;
+  sidebarOpen = false;
+  Math = Math;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     addIcons({
-      bookOutline,
-      documentTextOutline,
-      createOutline,
-      helpCircleOutline,
-      checkmarkDoneOutline,
-      checkboxOutline,
-      refreshOutline,
-      thumbsUpOutline,
-      ribbonOutline,
-      sparklesOutline,
-      homeOutline,
+      bookOutline, documentTextOutline, createOutline, helpCircleOutline,
+      checkmarkDoneOutline, checkmarkCircle, checkmarkOutline, closeCircle,
+      checkboxOutline, refreshOutline, thumbsUpOutline, ribbonOutline,
+      sparklesOutline, homeOutline, menuOutline, pencilOutline,
+      libraryOutline, schoolOutline, shapesOutline, eyeOutline,
+      informationCircleOutline, arrowForwardCircleOutline,
     });
   }
 
@@ -351,46 +317,30 @@ export class PuntuacionSubmoduloPage implements OnInit, OnDestroy {
       const raw = (pm.get('id') || 'punto') as PuntuacionId;
       this.id = raw;
       this.data = PUNTUACION[this.id] ?? PUNTUACION.punto;
-
       this.revealed = {};
       this.answers = {};
       this.score = 0;
       this.submitted = false;
-
       this.recalcModuleProgress();
     });
   }
 
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
-  }
+  ngOnDestroy() { this.sub?.unsubscribe(); }
 
-  irHome() {
-    this.router.navigateByUrl('/');
-  }
+  irHome() { this.router.navigateByUrl('/'); }
 
-  toggleSolucion(i: number) {
-    this.revealed[i] = !this.revealed[i];
-  }
+  toggleSolucion(i: number) { this.revealed[i] = !this.revealed[i]; }
 
-  selectAnswer(qIndex: number, optIndex: number) {
-    this.answers[qIndex] = optIndex;
-  }
+  selectAnswer(qIndex: number, optIndex: number) { this.answers[qIndex] = optIndex; }
 
   submitQuiz() {
     let s = 0;
-    this.data.quiz.forEach((q, i) => {
-      if (this.answers[i] === q.answerIndex) s++;
-    });
+    this.data.quiz.forEach((q, i) => { if (this.answers[i] === q.answerIndex) s++; });
     this.score = s;
     this.submitted = true;
   }
 
-  resetQuiz() {
-    this.answers = {};
-    this.score = 0;
-    this.submitted = false;
-  }
+  resetQuiz() { this.answers = {}; this.score = 0; this.submitted = false; }
 
   marcarCompletado() {
     localStorage.setItem(`done_puntuacion_${this.id}`, '1');
@@ -405,21 +355,19 @@ export class PuntuacionSubmoduloPage implements OnInit, OnDestroy {
     localStorage.setItem('progress_puntuacion', String(this.moduleProgress));
   }
 
-  irA(id: PuntuacionId) {
-    this.router.navigate(['/puntuacion', id]); ;
-  }
-  // Métodos helper para evitar errores de TypeScript
-  getQuizLength(): number {
-    return this.data?.quiz?.length || 0;
+  irA(id: PuntuacionId) { this.router.navigate(['/puntuacion', id]); }
+
+  toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
+
+  isCompleted(subId: string): boolean {
+    return localStorage.getItem(`done_puntuacion_${subId}`) === '1';
   }
 
   getScorePercentage(): number {
-    const total = this.getQuizLength();
+    const total = this.data?.quiz?.length || 0;
     if (total === 0) return 0;
     return Math.round((this.score / total) * 100);
   }
 
-  hasQuiz(): boolean {
-    return this.data?.quiz && this.data.quiz.length > 0;
-  }
+  goToModule(moduleName: string) { this.router.navigate([`/${moduleName}`]); }
 }

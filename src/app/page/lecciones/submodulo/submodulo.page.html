@@ -1,105 +1,226 @@
-<ion-header class="topbar" translucent="true">
+<ion-header class="header-modern">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/lecciones"></ion-back-button>
+      <ion-button (click)="toggleSidebar()">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
 
     <ion-title>{{ titulo }}</ion-title>
 
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="irHome()">
-        <ion-icon name="home-outline" slot="start"></ion-icon>
-        Inicio
+        <ion-icon name="home-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="page-bg">
-    <div class="wrap">
+<ion-content>
+  <div class="submodulo-layout">
 
-      <header class="hero">
-        <h1>{{ titulo }}</h1>
-        <p>{{ descripcion }}</p>
-
-        <div class="actions">
-          <ion-button class="primary" (click)="submit()" [disabled]="submitted">
-            Finalizar
-          </ion-button>
-
-          <ion-button fill="outline" (click)="generar()">
-            Reintentar (nuevo orden)
-          </ion-button>
-
-          <div class="score" *ngIf="submitted">
-            Resultado: <b>{{ score }}</b> / <b>{{ questions.length }}</b>
-          </div>
+    <!-- SIDEBAR -->
+    <div class="sidebar" [class.sidebar-open]="sidebarOpen">
+      <div class="sidebar-header">
+        <div class="module-icon">
+          <ion-icon name="school-outline"></ion-icon>
         </div>
-      </header>
-
-      <div class="glass">
-
-        <div class="q" *ngFor="let q of questions; let qi = index">
-          <div class="q-head">
-            <div class="q-num">Pregunta {{ qi + 1 }}</div>
-            <div class="q-type">
-              <span *ngIf="q.type === 'single'">Selección simple</span>
-              <span *ngIf="q.type === 'multiple'">Selección múltiple</span>
-              <span *ngIf="q.type === 'match'">Unir</span>
-            </div>
-          </div>
-
-          <div class="q-text">{{ q.prompt }}</div>
-
-          <!-- SINGLE -->
-          <div class="opts" *ngIf="q.type === 'single'">
-            <button
-              class="opt"
-              *ngFor="let opt of q.options; let oi = index"
-              [class.selected]="singleAnswers[qi] === oi"
-              (click)="singleAnswers[qi] = oi"
-              [disabled]="submitted">
-              {{ opt }}
-            </button>
-          </div>
-
-          <!-- MULTIPLE -->
-          <div class="multi" *ngIf="q.type === 'multiple'">
-            <label class="check" *ngFor="let opt of q.options; let oi = index">
-              <input
-                type="checkbox"
-                [disabled]="submitted"
-                [checked]="(multipleAnswers[qi] || []).includes(oi)"
-                (change)="toggleMultiple(qi, oi, $any($event.target).checked)"
-              />
-              <span>{{ opt }}</span>
-            </label>
-          </div>
-
-          <!-- MATCH -->
-          <div class="match" *ngIf="q.type === 'match'">
-            <div class="match-row" *ngFor="let left of q.left; let li = index">
-              <div class="left">{{ left }}</div>
-
-              <select
-                [disabled]="submitted"
-                (change)="setMatch(qi, li, +$any($event.target).value)">
-                <option value="" selected disabled>Selecciona…</option>
-                <option *ngFor="let r of q.right; let ri = index" [value]="ri">
-                  {{ r }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <!-- EXPLICACIÓN (al final) -->
-          <div class="explain" *ngIf="submitted">
-            {{ q.explain }}
-          </div>
-        </div>
-
+        <h3>Lecciones</h3>
+        <p class="module-subtitle">Práctica y repaso</p>
       </div>
+
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-label">Lecciones</div>
+
+          <div class="nav-item"
+               [class.active]="id === 'gramatica'"
+               (click)="irA('gramatica')">
+            <ion-icon name="book-outline"></ion-icon>
+            <span>Gramática</span>
+          </div>
+
+          <div class="nav-item"
+               [class.active]="id === 'ortografia'"
+               (click)="irA('ortografia')">
+            <ion-icon name="pencil-outline"></ion-icon>
+            <span>Ortografía</span>
+          </div>
+
+          <div class="nav-item"
+               [class.active]="id === 'puntuacion'"
+               (click)="irA('puntuacion')">
+            <ion-icon name="shapes-outline"></ion-icon>
+            <span>Puntuación</span>
+          </div>
+
+          <div class="nav-item"
+               [class.active]="id === 'redaccion'"
+               (click)="irA('redaccion')">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <span>Redacción</span>
+          </div>
+
+          <div class="nav-item"
+               [class.active]="id === 'compresion'"
+               (click)="irA('compresion')">
+            <ion-icon name="library-outline"></ion-icon>
+            <span>Comprensión</span>
+          </div>
+
+          <div class="nav-item"
+               [class.active]="id === 'examen-final'"
+               (click)="irA('examen-final')">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <span>Examen Final</span>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Módulos</div>
+          <div class="nav-item" (click)="goToModule('gramatica')"><ion-icon name="book-outline"></ion-icon><span>Gramática</span></div>
+          <div class="nav-item" (click)="goToModule('ortografia')"><ion-icon name="pencil-outline"></ion-icon><span>Ortografía</span></div>
+          <div class="nav-item" (click)="goToModule('puntuacion')"><ion-icon name="shapes-outline"></ion-icon><span>Puntuación</span></div>
+          <div class="nav-item" (click)="goToModule('redaccion')"><ion-icon name="document-text-outline"></ion-icon><span>Redacción</span></div>
+          <div class="nav-item" (click)="goToModule('compresion')"><ion-icon name="library-outline"></ion-icon><span>Comprensión</span></div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-item" (click)="irHome()">
+            <ion-icon name="home-outline"></ion-icon>
+            <span>Dashboard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content" [class.sidebar-open]="sidebarOpen">
+
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-badge">
+          <ion-icon name="school-outline"></ion-icon>
+          <span>{{ titulo }}</span>
+        </div>
+        <h1 class="hero-title">{{ titulo }}</h1>
+        <p class="hero-description">{{ descripcion }}</p>
+      </div>
+
+      <!-- Card Quiz -->
+      <div class="content-cards">
+        <div class="card card-quiz">
+          <div class="card-header">
+            <div class="card-icon red">
+              <ion-icon name="help-circle-outline"></ion-icon>
+            </div>
+            <div class="card-title">
+              <h2>Preguntas de práctica</h2>
+              <p>{{ questions.length }} preguntas aleatorias</p>
+            </div>
+          </div>
+          <div class="card-body">
+
+            <!-- Resultado -->
+            <div class="quiz-results" *ngIf="submitted">
+              <div class="result-card">
+                <div class="result-score">
+                  <span class="score-number">{{ score }}</span>
+                  <span class="score-total">/ {{ questions.length }}</span>
+                </div>
+                <div class="result-message">
+                  <h3 *ngIf="score === questions.length">¡Perfecto! 🎉</h3>
+                  <h3 *ngIf="score >= questions.length * 0.7 && score < questions.length">¡Muy bien! 👏</h3>
+                  <h3 *ngIf="score < questions.length * 0.7">Sigue practicando 💪</h3>
+                  <p>{{ score * 100 / questions.length | number:'1.0-0' }}% de respuestas correctas</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preguntas -->
+            <div class="quiz-questions">
+              <div class="question" *ngFor="let q of questions; let qi = index">
+                <div class="question-header">
+                  <span class="question-number">Pregunta {{ qi + 1 }}</span>
+                  <span class="question-count">
+                    <span *ngIf="q.type === 'single'">Selección simple</span>
+                    <span *ngIf="q.type === 'multiple'">Selección múltiple</span>
+                    <span *ngIf="q.type === 'match'">Unir columnas</span>
+                  </span>
+                </div>
+                <h3 class="question-text">{{ q.prompt }}</h3>
+
+                <!-- SINGLE -->
+                <div class="options" *ngIf="q.type === 'single'">
+                  <div class="option"
+                       *ngFor="let opt of q.options; let oi = index"
+                       [class.selected]="singleAnswers[qi] === oi"
+                       [class.correct]="submitted && oi === q.answer"
+                       [class.incorrect]="submitted && singleAnswers[qi] === oi && oi !== q.answer"
+                       (click)="!submitted && (singleAnswers[qi] = oi)">
+                    <div class="option-indicator">
+                      <ion-icon *ngIf="submitted && oi === q.answer" name="checkmark-circle"></ion-icon>
+                      <ion-icon *ngIf="submitted && singleAnswers[qi] === oi && oi !== q.answer" name="close-circle"></ion-icon>
+                    </div>
+                    <span class="option-text">{{ opt }}</span>
+                  </div>
+                </div>
+
+                <!-- MULTIPLE -->
+                <div class="options" *ngIf="q.type === 'multiple'">
+                  <div class="option"
+                       *ngFor="let opt of q.options; let oi = index"
+                       [class.selected]="(multipleAnswers[qi] || []).includes(oi)"
+                       [class.correct]="submitted && q.answers.includes(oi)"
+                       (click)="!submitted && toggleMultiple(qi, oi, !(multipleAnswers[qi] || []).includes(oi))">
+                    <div class="option-indicator">
+                      <ion-icon *ngIf="submitted && q.answers.includes(oi)" name="checkmark-circle"></ion-icon>
+                    </div>
+                    <span class="option-text">{{ opt }}</span>
+                  </div>
+                </div>
+
+                <!-- MATCH -->
+                <div class="activity-exercises" *ngIf="q.type === 'match'">
+                  <div class="exercise" *ngFor="let left of q.left; let li = index">
+                    <div class="exercise-number">{{ li + 1 }}</div>
+                    <div class="exercise-content">
+                      <p class="exercise-text">{{ left }}</p>
+                      <select
+                        class="match-select"
+                        [disabled]="submitted"
+                        (change)="setMatch(qi, li, +$any($event.target).value)">
+                        <option value="" selected disabled>Selecciona…</option>
+                        <option *ngFor="let r of q.right; let ri = index" [value]="ri">{{ r }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Explicación -->
+                <div class="explanation" *ngIf="submitted">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <p>{{ q.explain }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="quiz-actions">
+              <ion-button *ngIf="!submitted" expand="block" (click)="submit()">
+                <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+                Finalizar lección
+              </ion-button>
+              <ion-button *ngIf="submitted" expand="block" fill="outline" (click)="generar()">
+                <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                Nuevo intento (orden aleatorio)
+              </ion-button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </ion-content>

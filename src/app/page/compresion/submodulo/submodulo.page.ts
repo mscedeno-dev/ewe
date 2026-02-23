@@ -2,40 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonLabel,
-  IonProgressBar,
-  IonRow,
-  IonTitle,
-  IonToolbar,
+  IonBackButton, IonButton, IonButtons, IonCol, IonContent,
+  IonGrid, IonHeader, IonIcon, IonLabel, IonProgressBar,
+  IonRow, IonTitle, IonToolbar,
 } from '@ionic/angular/standalone';
+import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
 import {
-  bookOutline,
-  checkboxOutline,
-  checkmarkDoneOutline,
-  createOutline,
-  documentTextOutline,
-  helpCircleOutline,
-  homeOutline,
-  refreshOutline,
-  ribbonOutline,
-  sparklesOutline,
-  thumbsUpOutline,
-  barChartOutline,
-  listOutline,
-  trendingUpOutline,
+  bookOutline, documentTextOutline, createOutline, helpCircleOutline,
+  homeOutline, checkmarkDoneOutline, checkmarkCircle, checkmarkOutline,
+  closeCircle, checkboxOutline, refreshOutline, ribbonOutline,
+  sparklesOutline, thumbsUpOutline, menuOutline, pencilOutline,
+  libraryOutline, schoolOutline, shapesOutline, eyeOutline,
+  informationCircleOutline, arrowForwardCircleOutline,
 } from 'ionicons/icons';
-import { Subscription } from 'rxjs';
 
-/** IDs = los 5 submódulos de tu UI (sin espacios) */
 type CompresionId =
   | 'idea-principal'
   | 'ideas-secundarias'
@@ -56,17 +37,14 @@ interface SubmoduloContent {
   descripcion: string;
   icon: string;
   color: string;
-
   teoria: string[];
   claves: string[];
   ejemplos: { titulo: string; items: string[] }[];
-
   actividad: {
     objetivo: string;
     instrucciones: string;
     frases: { texto: string; solucion: string }[];
   };
-
   quiz: QuizQuestion[];
 }
 
@@ -91,8 +69,8 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       {
         titulo: 'Ejemplo (mini texto)',
         items: [
-          'Texto: “Dormir bien mejora la concentración y la memoria. Además, reduce el estrés.”',
-          'Idea principal: “Dormir bien mejora el rendimiento y el bienestar.”',
+          'Texto: "Dormir bien mejora la concentración y la memoria. Además, reduce el estrés."',
+          'Idea principal: "Dormir bien mejora el rendimiento y el bienestar."',
         ],
       },
     ],
@@ -100,40 +78,21 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       objetivo: 'Diferenciar idea principal vs detalles.',
       instrucciones: 'Lee la frase y mira cuál opción sería la idea principal.',
       frases: [
-        {
-          texto: '“El reciclaje reduce la basura, ahorra recursos y protege el ambiente.”',
-          solucion: 'Idea principal: “El reciclaje beneficia al ambiente y a los recursos.”',
-        },
-        {
-          texto: '“La lectura amplía vocabulario, mejora comprensión y fortalece la escritura.”',
-          solucion: 'Idea principal: “La lectura mejora habilidades de lenguaje.”',
-        },
-        {
-          texto: '“Hacer ejercicio fortalece el corazón y mejora el ánimo.”',
-          solucion: 'Idea principal: “El ejercicio mejora la salud física y mental.”',
-        },
+        { texto: '"El reciclaje reduce la basura, ahorra recursos y protege el ambiente."', solucion: 'Idea principal: "El reciclaje beneficia al ambiente y a los recursos."' },
+        { texto: '"La lectura amplía vocabulario, mejora comprensión y fortalece la escritura."', solucion: 'Idea principal: "La lectura mejora habilidades de lenguaje."' },
+        { texto: '"Hacer ejercicio fortalece el corazón y mejora el ánimo."', solucion: 'Idea principal: "El ejercicio mejora la salud física y mental."' },
       ],
     },
     quiz: [
       {
         q: 'La idea principal es…',
-        options: [
-          'un ejemplo del texto',
-          'un detalle pequeño',
-          'el mensaje central del texto',
-          'una palabra difícil',
-        ],
+        options: ['un ejemplo del texto', 'un detalle pequeño', 'el mensaje central del texto', 'una palabra difícil'],
         answerIndex: 2,
         explain: 'La idea principal es el mensaje global más importante.',
       },
       {
         q: '¿Cuál opción suele ayudar a encontrar la idea principal?',
-        options: [
-          'leer solo el medio del texto',
-          'leer título y cierre',
-          'mirar solo ejemplos',
-          'ignorar la introducción',
-        ],
+        options: ['leer solo el medio del texto', 'leer título y cierre', 'mirar solo ejemplos', 'ignorar la introducción'],
         answerIndex: 1,
         explain: 'Título + primera/última parte suelen dar la clave del tema.',
       },
@@ -144,7 +103,7 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
     id: 'ideas-secundarias',
     titulo: 'Ideas secundarias',
     descripcion: 'Reconoce datos que apoyan la idea principal: ejemplos, causas, consecuencias.',
-    icon: 'list-outline',
+    icon: 'book-outline',
     color: '#22c55e',
     teoria: [
       'Las ideas secundarias explican, amplían o justifican la idea principal.',
@@ -159,8 +118,8 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       {
         titulo: 'Ejemplo',
         items: [
-          'Idea principal: “El ejercicio es bueno.”',
-          'Secundarias: “Mejora el corazón”, “ayuda a controlar el estrés”, “aumenta energía”.',
+          'Idea principal: "El ejercicio es bueno."',
+          'Secundarias: "Mejora el corazón", "ayuda a controlar el estrés", "aumenta energía".',
         ],
       },
     ],
@@ -168,42 +127,23 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       objetivo: 'Detectar cuál idea es secundaria.',
       instrucciones: 'Observa qué frase funciona como apoyo y no como tema central.',
       frases: [
-        {
-          texto: '“Comer frutas ayuda a la salud. Por ejemplo, aportan vitaminas y fibra.”',
-          solucion: 'Secundaria: “aportan vitaminas y fibra” (ejemplo/soporte).',
-        },
-        {
-          texto: '“La contaminación afecta la salud. Puede causar alergias y problemas respiratorios.”',
-          solucion: 'Secundaria: “causar alergias…” (consecuencia).',
-        },
-        {
-          texto: '“La lectura es importante. También mejora la escritura.”',
-          solucion: 'Secundaria: “mejora la escritura” (apoya la idea central).',
-        },
+        { texto: '"Comer frutas ayuda a la salud. Por ejemplo, aportan vitaminas y fibra."', solucion: 'Secundaria: "aportan vitaminas y fibra" (ejemplo/soporte).' },
+        { texto: '"La contaminación afecta la salud. Puede causar alergias y problemas respiratorios."', solucion: 'Secundaria: "causar alergias…" (consecuencia).' },
+        { texto: '"La lectura es importante. También mejora la escritura."', solucion: 'Secundaria: "mejora la escritura" (apoya la idea central).' },
       ],
     },
     quiz: [
       {
         q: 'Las ideas secundarias sirven para…',
-        options: [
-          'cambiar de tema',
-          'apoyar y explicar la idea principal',
-          'hacer el texto más confuso',
-          'repetir la idea principal igual',
-        ],
+        options: ['cambiar de tema', 'apoyar y explicar la idea principal', 'hacer el texto más confuso', 'repetir la idea principal igual'],
         answerIndex: 1,
         explain: 'Secundarias = soporte (ejemplos, razones, datos).',
       },
       {
         q: '¿Cuál es una idea secundaria?',
-        options: [
-          '“El ejercicio mejora la salud” (tema)',
-          '“El texto trata sobre deporte” (tema)',
-          '“Ayuda a reducir el estrés” (apoyo)',
-          '“El ejercicio” (palabra suelta)',
-        ],
+        options: ['"El ejercicio mejora la salud" (tema)', '"El texto trata sobre deporte" (tema)', '"Ayuda a reducir el estrés" (apoyo)', '"El ejercicio" (palabra suelta)'],
         answerIndex: 2,
-        explain: '“Ayuda a reducir el estrés” es un apoyo específico.',
+        explain: '"Ayuda a reducir el estrés" es un apoyo específico.',
       },
     ],
   },
@@ -212,7 +152,7 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
     id: 'inferencias',
     titulo: 'Inferencias',
     descripcion: 'Saca conclusiones a partir de pistas del texto (sin que lo diga literal).',
-    icon: 'trending-up-outline',
+    icon: 'create-outline',
     color: '#a855f7',
     teoria: [
       'Inferir es deducir información no explícita usando pistas del texto.',
@@ -227,8 +167,8 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       {
         titulo: 'Ejemplo',
         items: [
-          'Texto: “Luis salió sin paraguas. Minutos después llegó empapado.”',
-          'Inferencia: “Estaba lloviendo” (no lo dice literal, pero se deduce).',
+          'Texto: "Luis salió sin paraguas. Minutos después llegó empapado."',
+          'Inferencia: "Estaba lloviendo" (no lo dice literal, pero se deduce).',
         ],
       },
     ],
@@ -236,34 +176,20 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       objetivo: 'Inferir con pistas claras.',
       instrucciones: 'Lee y deduce lo más probable.',
       frases: [
-        {
-          texto: '“Ana bostezaba y miraba el reloj cada minuto.”',
-          solucion: 'Inferencia: Ana está cansada o aburrida y quiere que pase el tiempo.',
-        },
-        {
-          texto: '“Pedro guardó el cuaderno y sonrió al ver su calificación.”',
-          solucion: 'Inferencia: Le fue bien o está satisfecho con su nota.',
-        },
-        {
-          texto: '“El suelo estaba mojado y había charcos en la calle.”',
-          solucion: 'Inferencia: Llovió hace poco.',
-        },
+        { texto: '"Ana bostezaba y miraba el reloj cada minuto."', solucion: 'Inferencia: Ana está cansada o aburrida y quiere que pase el tiempo.' },
+        { texto: '"Pedro guardó el cuaderno y sonrió al ver su calificación."', solucion: 'Inferencia: Le fue bien o está satisfecho con su nota.' },
+        { texto: '"El suelo estaba mojado y había charcos en la calle."', solucion: 'Inferencia: Llovió hace poco.' },
       ],
     },
     quiz: [
       {
         q: 'Inferir significa…',
-        options: [
-          'copiar una frase',
-          'deducir algo con pistas del texto',
-          'cambiar palabras por sinónimos',
-          'leer en voz alta',
-        ],
+        options: ['copiar una frase', 'deducir algo con pistas del texto', 'cambiar palabras por sinónimos', 'leer en voz alta'],
         answerIndex: 1,
         explain: 'Inferir = deducir lo que no está escrito literal.',
       },
       {
-        q: 'Texto: “Llegó con ojeras y se quedó dormido en clase.” ¿Qué se infiere?',
+        q: 'Texto: "Llegó con ojeras y se quedó dormido en clase." ¿Qué se infiere?',
         options: ['Está enfermo', 'No durmió bien', 'Ganó un premio', 'Comió demasiado'],
         answerIndex: 1,
         explain: 'Ojeras + dormirse sugieren falta de sueño.',
@@ -291,10 +217,10 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       {
         titulo: 'Pistas rápidas',
         items: [
-          '“Había una vez…” → narrativo.',
-          '“Según el estudio…” → informativo.',
-          '“Considero que…” → argumentativo.',
-          '“Paso 1 / Paso 2” → instructivo.',
+          '"Había una vez…" → narrativo.',
+          '"Según el estudio…" → informativo.',
+          '"Considero que…" → argumentativo.',
+          '"Paso 1 / Paso 2" → instructivo.',
         ],
       },
     ],
@@ -302,18 +228,9 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       objetivo: 'Clasificar por intención.',
       instrucciones: 'Lee y decide el tipo.',
       frases: [
-        {
-          texto: '“Primero enciende la computadora, luego abre el programa.”',
-          solucion: 'Instructivo (da pasos).',
-        },
-        {
-          texto: '“La fotosíntesis es el proceso por el cual…”',
-          solucion: 'Informativo (explica un concepto).',
-        },
-        {
-          texto: '“Pienso que reciclar es necesario porque…”',
-          solucion: 'Argumentativo (opina y da razones).',
-        },
+        { texto: '"Primero enciende la computadora, luego abre el programa."', solucion: 'Instructivo (da pasos).' },
+        { texto: '"La fotosíntesis es el proceso por el cual…"', solucion: 'Informativo (explica un concepto).' },
+        { texto: '"Pienso que reciclar es necesario porque…"', solucion: 'Argumentativo (opina y da razones).' },
       ],
     },
     quiz: [
@@ -324,7 +241,7 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
         explain: 'Narrativo = historia, hechos, personajes.',
       },
       {
-        q: '“Paso 1, paso 2…” corresponde a un texto…',
+        q: '"Paso 1, paso 2…" corresponde a un texto…',
         options: ['argumentativo', 'narrativo', 'instructivo', 'poético'],
         answerIndex: 2,
         explain: 'Instructivo = pasos o instrucciones.',
@@ -351,8 +268,8 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       {
         titulo: 'Ejemplo',
         items: [
-          'Texto: “El ejercicio mejora la salud, reduce estrés y aumenta energía.”',
-          'Resumen: “El ejercicio mejora la salud y el bienestar.”',
+          'Texto: "El ejercicio mejora la salud, reduce estrés y aumenta energía."',
+          'Resumen: "El ejercicio mejora la salud y el bienestar."',
         ],
       },
     ],
@@ -360,29 +277,15 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
       objetivo: 'Resumir sin perder lo esencial.',
       instrucciones: 'Mira cómo se reduce manteniendo sentido.',
       frases: [
-        {
-          texto: '“Dormir bien mejora la memoria y la concentración, por eso ayuda en el estudio.”',
-          solucion: 'Resumen: Dormir bien mejora la concentración y ayuda a estudiar.',
-        },
-        {
-          texto: '“La contaminación del aire afecta la salud y causa enfermedades respiratorias.”',
-          solucion: 'Resumen: La contaminación del aire afecta la salud.',
-        },
-        {
-          texto: '“Leer amplía vocabulario, mejora comprensión y fortalece la escritura.”',
-          solucion: 'Resumen: Leer mejora habilidades del lenguaje.',
-        },
+        { texto: '"Dormir bien mejora la memoria y la concentración, por eso ayuda en el estudio."', solucion: 'Resumen: Dormir bien mejora la concentración y ayuda a estudiar.' },
+        { texto: '"La contaminación del aire afecta la salud y causa enfermedades respiratorias."', solucion: 'Resumen: La contaminación del aire afecta la salud.' },
+        { texto: '"Leer amplía vocabulario, mejora comprensión y fortalece la escritura."', solucion: 'Resumen: Leer mejora habilidades del lenguaje.' },
       ],
     },
     quiz: [
       {
         q: 'Un buen resumen debe…',
-        options: [
-          'ser más largo que el texto',
-          'copiar el texto literal',
-          'mantener lo esencial con menos palabras',
-          'meter ejemplos nuevos',
-        ],
+        options: ['ser más largo que el texto', 'copiar el texto literal', 'mantener lo esencial con menos palabras', 'meter ejemplos nuevos'],
         answerIndex: 2,
         explain: 'Resumen = esencial + breve + claro.',
       },
@@ -402,21 +305,9 @@ const COMPRESION: Record<CompresionId, SubmoduloContent> = {
   templateUrl: './submodulo.page.html',
   styleUrls: ['./submodulo.page.scss'],
   imports: [
-    CommonModule,
-    RouterModule,
-    IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
-    IonButton,
-    IonIcon,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonLabel,
-    IonProgressBar,
+    CommonModule, RouterModule, IonContent, IonHeader, IonToolbar,
+    IonTitle, IonButtons, IonBackButton, IonButton, IonIcon,
+    IonGrid, IonRow, IonCol, IonLabel, IonProgressBar,
   ],
 })
 export class CompresionSubmoduloPage implements OnInit, OnDestroy {
@@ -429,108 +320,72 @@ export class CompresionSubmoduloPage implements OnInit, OnDestroy {
   answers: Record<number, number> = {};
   score = 0;
   submitted = false;
-
   moduleProgress = 0;
+  sidebarOpen = false;
+  Math = Math;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     addIcons({
-      bookOutline,
-      documentTextOutline,
-      createOutline,
-      helpCircleOutline,
-      checkmarkDoneOutline,
-      checkboxOutline,
-      refreshOutline,
-      thumbsUpOutline,
-      ribbonOutline,
-      sparklesOutline,
-      homeOutline,
-      barChartOutline,
-      listOutline,
-      trendingUpOutline,
+      bookOutline, documentTextOutline, createOutline, helpCircleOutline,
+      homeOutline, checkmarkDoneOutline, checkmarkCircle, checkmarkOutline,
+      closeCircle, checkboxOutline, refreshOutline, ribbonOutline,
+      sparklesOutline, thumbsUpOutline, menuOutline, pencilOutline,
+      libraryOutline, schoolOutline, shapesOutline, eyeOutline,
+      informationCircleOutline, arrowForwardCircleOutline,
     });
   }
 
   ngOnInit() {
     this.sub = this.route.paramMap.subscribe((pm) => {
-      const raw = (pm.get('id') || 'idea-principal') as CompresionId;
-      this.id = raw;
-      this.data = COMPRESION[this.id] ?? COMPRESION['idea-principal'];
-
+      this.id = (pm.get('id') || 'idea-principal') as CompresionId;
+      this.data = COMPRESION[this.id];
       this.revealed = {};
       this.answers = {};
       this.score = 0;
       this.submitted = false;
-
       this.recalcModuleProgress();
     });
   }
 
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
-  }
+  ngOnDestroy() { this.sub?.unsubscribe(); }
 
-  irHome() {
-    this.router.navigateByUrl('/');
-  }
+  irHome() { this.router.navigateByUrl('/'); }
 
-  toggleSolucion(i: number) {
-    this.revealed[i] = !this.revealed[i];
-  }
+  toggleSolucion(i: number) { this.revealed[i] = !this.revealed[i]; }
 
-  selectAnswer(qIndex: number, optIndex: number) {
-    this.answers[qIndex] = optIndex;
-  }
+  selectAnswer(qIndex: number, optIndex: number) { this.answers[qIndex] = optIndex; }
 
   submitQuiz() {
-    let s = 0;
-    this.data.quiz.forEach((q, i) => {
-      if (this.answers[i] === q.answerIndex) s++;
-    });
-    this.score = s;
+    this.score = this.data.quiz.filter((q, i) => this.answers[i] === q.answerIndex).length;
     this.submitted = true;
   }
 
-  resetQuiz() {
-    this.answers = {};
-    this.score = 0;
-    this.submitted = false;
-  }
+  resetQuiz() { this.answers = {}; this.score = 0; this.submitted = false; }
 
   marcarCompletado() {
     localStorage.setItem(`done_compresion_${this.id}`, '1');
     this.recalcModuleProgress();
-    localStorage.setItem('progress_compresion', String(this.moduleProgress));
   }
 
   private recalcModuleProgress() {
-    const ids: CompresionId[] = [
-      'idea-principal',
-      'ideas-secundarias',
-      'inferencias',
-      'tipos-de-texto',
-      'resumen',
-    ];
-    const doneCount = ids.filter((x) => localStorage.getItem(`done_compresion_${x}`) === '1').length;
-    this.moduleProgress = Math.round((doneCount / ids.length) * 100);
-    localStorage.setItem('progress_compresion', String(this.moduleProgress));
+    const ids: CompresionId[] = ['idea-principal', 'ideas-secundarias', 'inferencias', 'tipos-de-texto', 'resumen'];
+    const done = ids.filter((x) => localStorage.getItem(`done_compresion_${x}`) === '1').length;
+    this.moduleProgress = Math.round((done / ids.length) * 100);
   }
 
-  irA(id: CompresionId) {
-    this.router.navigate(['/compresion', id]);
+  toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
+
+  isCompleted(subId: string): boolean {
+    return localStorage.getItem(`done_compresion_${subId}`) === '1';
   }
-  // Métodos helper para evitar errores de TypeScript
-  getQuizLength(): number {
-    return this.data?.quiz?.length || 0;
-  }
+
+  irA(id: CompresionId) { this.router.navigate(['/compresion', id]); }
 
   getScorePercentage(): number {
-    const total = this.getQuizLength();
+    const total = this.data?.quiz?.length || 0;
     if (total === 0) return 0;
     return Math.round((this.score / total) * 100);
   }
 
-  hasQuiz(): boolean {
-    return this.data?.quiz && this.data.quiz.length > 0;
-  }
+  goToModule(moduleName: string) { this.router.navigate([`/${moduleName}`]); }
 }

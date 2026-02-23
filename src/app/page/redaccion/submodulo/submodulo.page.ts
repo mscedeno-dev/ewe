@@ -2,37 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonLabel,
-  IonProgressBar,
-  IonRow,
-  IonTitle,
-  IonToolbar,
+  IonBackButton, IonButton, IonButtons, IonCol, IonContent,
+  IonGrid, IonHeader, IonIcon, IonLabel, IonProgressBar,
+  IonRow, IonTitle, IonToolbar,
 } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
 import {
-  bookOutline,
-  documentTextOutline,
-  createOutline,
-  helpCircleOutline,
-  homeOutline,
-  checkmarkDoneOutline,
-  checkboxOutline,
-  refreshOutline,
-  ribbonOutline,
-  sparklesOutline,
-  thumbsUpOutline,
+  bookOutline, documentTextOutline, createOutline, helpCircleOutline,
+  homeOutline, checkmarkDoneOutline, checkmarkCircle, checkmarkOutline,
+  closeCircle, checkboxOutline, refreshOutline, ribbonOutline,
+  sparklesOutline, thumbsUpOutline, menuOutline, pencilOutline,
+  libraryOutline, schoolOutline, shapesOutline, eyeOutline,
+  informationCircleOutline, arrowForwardCircleOutline,
 } from 'ionicons/icons';
 
-/* IDs EXACTOS de tus cards */
 type RedaccionId =
   | 'oracion-simple'
   | 'oracion-compuesta'
@@ -51,23 +35,17 @@ interface SubmoduloContent {
   id: RedaccionId;
   titulo: string;
   descripcion: string;
-
   teoria: string[];
   claves: string[];
   ejemplos: { titulo: string; items: string[] }[];
-
   actividad: {
     objetivo: string;
     instrucciones: string;
     frases: { texto: string; solucion: string }[];
   };
-
   quiz: QuizQuestion[];
 }
 
-/* ===========================
-   CONTENIDO DE REDACCIÓN
-   =========================== */
 const REDACCION: Record<RedaccionId, SubmoduloContent> = {
   'oracion-simple': {
     id: 'oracion-simple',
@@ -84,11 +62,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     ejemplos: [
       {
         titulo: 'Ejemplos',
-        items: [
-          'El estudiante estudia.',
-          'María lee un libro.',
-          'La clase terminó.',
-        ],
+        items: ['El estudiante estudia.', 'María lee un libro.', 'La clase terminó.'],
       },
     ],
     actividad: {
@@ -103,12 +77,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     quiz: [
       {
         q: '¿Cuál es una oración simple?',
-        options: [
-          'Estudio y trabajo.',
-          'Voy al colegio.',
-          'Cuando llegué, estudié.',
-          'Aunque llueve, salgo.',
-        ],
+        options: ['Estudio y trabajo.', 'Voy al colegio.', 'Cuando llegué, estudié.', 'Aunque llueve, salgo.'],
         answerIndex: 1,
         explain: 'Tiene un solo verbo conjugado.',
       },
@@ -130,11 +99,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     ejemplos: [
       {
         titulo: 'Ejemplos',
-        items: [
-          'Estudio y trabajo.',
-          'No salí porque llovía.',
-          'Aunque estaba cansado, terminé.',
-        ],
+        items: ['Estudio y trabajo.', 'No salí porque llovía.', 'Aunque estaba cansado, terminé.'],
       },
     ],
     actividad: {
@@ -149,12 +114,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     quiz: [
       {
         q: 'Una oración compuesta se caracteriza por…',
-        options: [
-          'un solo verbo',
-          'no tener sujeto',
-          'tener dos o más verbos',
-          'no tener sentido',
-        ],
+        options: ['un solo verbo', 'no tener sujeto', 'tener dos o más verbos', 'no tener sentido'],
         answerIndex: 2,
         explain: 'La clave es la cantidad de verbos.',
       },
@@ -176,9 +136,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     ejemplos: [
       {
         titulo: 'Ejemplo',
-        items: [
-          'La lectura es importante. Ayuda a mejorar la comprensión y el vocabulario.',
-        ],
+        items: ['La lectura es importante. Ayuda a mejorar la comprensión y el vocabulario.'],
       },
     ],
     actividad: {
@@ -194,12 +152,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     quiz: [
       {
         q: 'Un párrafo debe tener…',
-        options: [
-          'muchas ideas sin orden',
-          'una idea principal',
-          'solo ejemplos',
-          'solo una oración',
-        ],
+        options: ['muchas ideas sin orden', 'una idea principal', 'solo ejemplos', 'solo una oración'],
         answerIndex: 1,
         explain: 'El párrafo se centra en una idea.',
       },
@@ -221,9 +174,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     ejemplos: [
       {
         titulo: 'Ejemplo',
-        items: [
-          'Estudié mucho. Por eso aprobé el examen.',
-        ],
+        items: ['Estudié mucho. Por eso aprobé el examen.'],
       },
     ],
     actividad: {
@@ -239,12 +190,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     quiz: [
       {
         q: 'La coherencia se refiere a…',
-        options: [
-          'usar signos',
-          'tener sentido lógico',
-          'usar mayúsculas',
-          'hacer textos largos',
-        ],
+        options: ['usar signos', 'tener sentido lógico', 'usar mayúsculas', 'hacer textos largos'],
         answerIndex: 1,
         explain: 'La coherencia da sentido al texto.',
       },
@@ -266,9 +212,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     ejemplos: [
       {
         titulo: 'Ejemplo',
-        items: [
-          'Estudié, por eso aprobé.',
-        ],
+        items: ['Estudié, por eso aprobé.'],
       },
     ],
     actividad: {
@@ -284,12 +228,7 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
     quiz: [
       {
         q: 'La cohesión se logra usando…',
-        options: [
-          'solo puntos',
-          'conectores',
-          'ideas sin orden',
-          'letras mayúsculas',
-        ],
+        options: ['solo puntos', 'conectores', 'ideas sin orden', 'letras mayúsculas'],
         answerIndex: 1,
         explain: 'Los conectores enlazan ideas.',
       },
@@ -297,30 +236,15 @@ const REDACCION: Record<RedaccionId, SubmoduloContent> = {
   },
 };
 
-/* ===========================
-   COMPONENTE
-   =========================== */
 @Component({
   selector: 'app-redaccion-submodulo',
   standalone: true,
   templateUrl: './submodulo.page.html',
   styleUrls: ['./submodulo.page.scss'],
   imports: [
-    CommonModule,
-    RouterModule,
-    IonContent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
-    IonButton,
-    IonIcon,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonLabel,
-    IonProgressBar,
+    CommonModule, RouterModule, IonContent, IonHeader, IonToolbar,
+    IonTitle, IonButtons, IonBackButton, IonButton, IonIcon,
+    IonGrid, IonRow, IonCol, IonLabel, IonProgressBar,
   ],
 })
 export class RedaccionSubmoduloPage implements OnInit, OnDestroy {
@@ -334,20 +258,17 @@ export class RedaccionSubmoduloPage implements OnInit, OnDestroy {
   score = 0;
   submitted = false;
   moduleProgress = 0;
+  sidebarOpen = false;
+  Math = Math;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     addIcons({
-      bookOutline,
-      documentTextOutline,
-      createOutline,
-      helpCircleOutline,
-      homeOutline,
-      checkmarkDoneOutline,
-      checkboxOutline,
-      refreshOutline,
-      ribbonOutline,
-      sparklesOutline,
-      thumbsUpOutline,
+      bookOutline, documentTextOutline, createOutline, helpCircleOutline,
+      homeOutline, checkmarkDoneOutline, checkmarkCircle, checkmarkOutline,
+      closeCircle, checkboxOutline, refreshOutline, ribbonOutline,
+      sparklesOutline, thumbsUpOutline, menuOutline, pencilOutline,
+      libraryOutline, schoolOutline, shapesOutline, eyeOutline,
+      informationCircleOutline, arrowForwardCircleOutline,
     });
   }
 
@@ -355,38 +276,28 @@ export class RedaccionSubmoduloPage implements OnInit, OnDestroy {
     this.sub = this.route.paramMap.subscribe((pm) => {
       this.id = (pm.get('id') || 'oracion-simple') as RedaccionId;
       this.data = REDACCION[this.id];
+      this.revealed = {};
+      this.answers = {};
+      this.score = 0;
+      this.submitted = false;
       this.recalcModuleProgress();
     });
   }
 
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
-  }
+  ngOnDestroy() { this.sub?.unsubscribe(); }
 
-  irHome() {
-    this.router.navigateByUrl('/');
-  }
+  irHome() { this.router.navigateByUrl('/'); }
 
-  toggleSolucion(i: number) {
-    this.revealed[i] = !this.revealed[i];
-  }
+  toggleSolucion(i: number) { this.revealed[i] = !this.revealed[i]; }
 
-  selectAnswer(qIndex: number, optIndex: number) {
-    this.answers[qIndex] = optIndex;
-  }
+  selectAnswer(qIndex: number, optIndex: number) { this.answers[qIndex] = optIndex; }
 
   submitQuiz() {
-    this.score = this.data.quiz.filter(
-      (q, i) => this.answers[i] === q.answerIndex
-    ).length;
+    this.score = this.data.quiz.filter((q, i) => this.answers[i] === q.answerIndex).length;
     this.submitted = true;
   }
 
-  resetQuiz() {
-    this.answers = {};
-    this.score = 0;
-    this.submitted = false;
-  }
+  resetQuiz() { this.answers = {}; this.score = 0; this.submitted = false; }
 
   marcarCompletado() {
     localStorage.setItem(`done_redaccion_${this.id}`, '1');
@@ -394,30 +305,24 @@ export class RedaccionSubmoduloPage implements OnInit, OnDestroy {
   }
 
   private recalcModuleProgress() {
-    const ids: RedaccionId[] = [
-      'oracion-simple',
-      'oracion-compuesta',
-      'parrafo',
-      'coherencia',
-      'cohesion',
-    ];
-    const done = ids.filter(
-      (x) => localStorage.getItem(`done_redaccion_${x}`) === '1'
-    ).length;
+    const ids: RedaccionId[] = ['oracion-simple', 'oracion-compuesta', 'parrafo', 'coherencia', 'cohesion'];
+    const done = ids.filter((x) => localStorage.getItem(`done_redaccion_${x}`) === '1').length;
     this.moduleProgress = Math.round((done / ids.length) * 100);
   }
-  // Métodos helper para evitar errores de TypeScript
-  getQuizLength(): number {
-    return this.data?.quiz?.length || 0;
+
+  toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
+
+  isCompleted(subId: string): boolean {
+    return localStorage.getItem(`done_redaccion_${subId}`) === '1';
   }
 
+  irA(id: RedaccionId) { this.router.navigate(['/redaccion', id]); }
+
   getScorePercentage(): number {
-    const total = this.getQuizLength();
+    const total = this.data?.quiz?.length || 0;
     if (total === 0) return 0;
     return Math.round((this.score / total) * 100);
   }
 
-  hasQuiz(): boolean {
-    return this.data?.quiz && this.data.quiz.length > 0;
-  }
+  goToModule(moduleName: string) { this.router.navigate([`/${moduleName}`]); }
 }
