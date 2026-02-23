@@ -36,6 +36,7 @@ import {
   chatbubblesOutline,
 } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 type GramaticaId = 'sustantivos' | 'verbos' | 'adjetivos' | 'articulos' | 'pronombres';
 
@@ -355,7 +356,12 @@ export class GramaticaSubmoduloPage implements OnInit, OnDestroy {
 
   moduleProgress = 0;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  
+  // Propiedades para sidebar y navegación
+  sidebarOpen = false;
+  Math = Math; // Para usar Math en el template
+
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     addIcons({
       bookOutline,
       documentTextOutline,
@@ -387,7 +393,7 @@ export class GramaticaSubmoduloPage implements OnInit, OnDestroy {
       this.score = 0;
       this.submitted = false;
 
-      this.recalcModuleProgress();
+      
     });
   }
 
@@ -423,17 +429,17 @@ export class GramaticaSubmoduloPage implements OnInit, OnDestroy {
     this.submitted = false;
   }
 
-  marcarCompletado() {
-    localStorage.setItem(`done_gramatica_${this.id}`, '1');
-    this.recalcModuleProgress();
+  async marcarCompletado() {
+    console.log('🔵 Marcando completado:', this.id);
+    
+    const key = `done_gramatica_${this.id}`;
+    localStorage.setItem(key, '1');
+   
     localStorage.setItem('progress_gramatica', String(this.moduleProgress));
-  }
-
-  private recalcModuleProgress() {
-    const ids: GramaticaId[] = ['sustantivos', 'verbos', 'adjetivos', 'articulos', 'pronombres'];
-    const doneCount = ids.filter((x) => localStorage.getItem(`done_gramatica_${x}`) === '1').length;
-    this.moduleProgress = Math.round((doneCount / ids.length) * 100);
-    localStorage.setItem('progress_gramatica', String(this.moduleProgress));
+    
+    console.log('🔵 Progreso calculado:', this.moduleProgress);
+    
+    
   }
 
   irA(id: GramaticaId) {
@@ -453,4 +459,48 @@ export class GramaticaSubmoduloPage implements OnInit, OnDestroy {
   hasQuiz(): boolean {
     return this.data?.quiz && this.data.quiz.length > 0;
   }
+  // Métodos para sidebar
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  // Verificar si un submódulo está completado
+  isCompleted(subId: string): boolean {
+    return localStorage.getItem(`done_gramatica_${subId}`) === '1';
+  }
+
+  // Obtener todos los IDs de submódulos
+  getAllIds(): string[] {
+    return ['sustantivos', 'verbos', 'adjetivos', 'articulos', 'pronombres'];
+  }
+
+  // Obtener ícono para un ID
+  getIconForId(subId: string): string {
+    const icons: { [key: string]: string } = {
+      'sustantivos': 'layers-outline',
+      'verbos': 'flash-outline',
+      'adjetivos': 'color-palette-outline',
+      'articulos': 'extension-puzzle-outline',
+      'pronombres': 'chatbubbles-outline'
+    };
+    return icons[subId] || 'book-outline';
+  }
+
+  // Obtener título para un ID
+  getTitleForId(subId: string): string {
+    const titles: { [key: string]: string } = {
+      'sustantivos': 'Sustantivos',
+      'verbos': 'Verbos',
+      'adjetivos': 'Adjetivos',
+      'articulos': 'Artículos',
+      'pronombres': 'Pronombres'
+    };
+    return titles[subId] || subId;
+  }
+
+  // Navegar a otro módulo
+  goToModule(moduleName: string) {
+    this.router.navigate([`/${moduleName}`]);
+  }
+
 }
